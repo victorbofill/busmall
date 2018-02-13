@@ -8,13 +8,11 @@ function Product (prodName, prodImage) {
     this.prodVotes = 0,
     this.prodRendered = 0;
     this.prodPercent = 0;
-    this.prodDisplayed = false
 };
 
 // creates all of the products and populates the products array with them as objects
 function createProducts () {
-    const prodR2Bag = new 
-    Product('R2-D2 Bag', 'bag.jpg');
+    const prodR2Bag = new Product('R2-D2 Bag', 'bag.jpg');
     products.push(prodR2Bag);
 
     const prodBanana = new Product('Banana Slicer', 'banana.jpg');
@@ -114,7 +112,7 @@ const renderImages = function() {
 
         const img = document.getElementById((i));
         img.setAttribute('src', 'img/' + activeObjects[i].prodImage);
-        activeImage.push(img);   
+        activeImage.push(img);
         i++;
     }
 };
@@ -133,10 +131,10 @@ table.addEventListener('click', function () {
         activeObjects = [];
         activeImage = [];
         clickCounter++;
-        footerCounter.textContent = 'Choices: ' + clickCounter + ' out of 25'
+        footerCounter.textContent = 'Choices: ' + clickCounter + ' out of 25';
         renderImages();
         console.log(clickCounter);
-    }
+    };
 
     if (clickedImage === activeImage[0]) {
         clickProcess(0);
@@ -180,7 +178,7 @@ const renderResultsTable = function() {
     const thOne = document.createElement('th');
     tr.appendChild(thOne);
     thOne.textContent = 'Product';
-    
+
     const thTwo = document.createElement('th');
     tr.appendChild(thTwo);
     thTwo.textContent = 'Times Displayed';
@@ -188,7 +186,7 @@ const renderResultsTable = function() {
     const thThree = document.createElement('th');
     tr.appendChild(thThree);
     thThree.textContent = 'Times Selected';
-    
+
     const thFour = document.createElement('th');
     tr.appendChild(thFour);
     thFour.textContent = 'Percentage Selected';
@@ -213,8 +211,8 @@ const renderResultsTable = function() {
         tr.appendChild(td);
 
         if (products[i].prodVotes > 0) {
-            products[i].prodPercent = (((products[i].prodVotes)/(products[i].prodRendered)) * 100);
+            products[i].prodPercent = (((products[i].prodVotes) / (products[i].prodRendered)) * 100);
             td.textContent = (Math.floor(products[i].prodPercent)) + '%';
         }
     }
-}
+};

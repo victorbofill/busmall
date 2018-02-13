@@ -1,6 +1,9 @@
 # BusMall Market Research
 ## Research into product demand
 ### To-do User Stories for research app
+As a market researcher, I want to view the results of the survey as a bar chart.
+As a developer, I want to use Chart.js to construct the bar chart.
+
 
 ### Complete User Stories for research app
 As a market researcher, I want customers to make one choice of three options, depicted as pictures.
@@ -16,12 +19,8 @@ As a market researcher, I want to control the experiment by disallowing an image
 As a developer, I want to include a button that will restart the survey for the next customer.
 As a customer, I want some background music to enjoy while I am taking the survey.
 As a customer, I want to be able to pause the music.
+As a customer, I want to be rewarded for my completion of the survey with a fun graphic or animation.
 
 ### Goals to be written as user stories
-Using ChartJS, display your vote totals in a bar chart. If you want to try some additional chart types, do so with some
-of your alternate data that you have calculated from your vote results. The size and look of your chart is up to you,
-just be sure to put it in the area beneath the three images.
 
 ### Stretch goals to be written as user stories
-Using the Canvas API, create a fun graphic or animation to play at the end of a survey so a user feels
-celebrated and appreciated.
