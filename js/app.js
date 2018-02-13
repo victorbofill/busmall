@@ -147,13 +147,13 @@ table.addEventListener('click', function () {
     const clickedImage = event.target;
 
     const footerCounter = document.getElementById('footer-counter');
-    footerCounter.textContent = 'Choices: ' + clickCounter + ' out of 25'
 
     const clickProcess = function(x) {
         activeObjects[x].prodVotes += 1;
         activeObjects = [];
         activeImage = [];
         clickCounter++;
+        footerCounter.textContent = 'Choices: ' + clickCounter + ' out of 25'
         renderImages();
         console.log(clickCounter);
     }
