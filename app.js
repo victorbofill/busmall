@@ -6,13 +6,16 @@ function Product (prodName, prodImage) {
     this.prodName = prodName,
     this.prodImage = prodImage,
     this.prodVotes = 0,
+    this.prodRendered = 0;
+    this.prodPercent = 0;
     this.prodDisplayed = false,
     this.index
 };
 
 // creates all of the products and populates the products array with them as objects
 function createProducts () {
-    const prodR2Bag = new Product('R2-D2 Bag', 'bag.jpg');
+    const prodR2Bag = new 
+    Product('R2-D2 Bag', 'bag.jpg');
     products.push(prodR2Bag);
     prodR2Bag.index = (products.length - 1);
 
@@ -36,7 +39,7 @@ function createProducts () {
     products.push(prodMeatGum);
     prodMeatGum.index = (products.length - 1);
 
-    const prodChair = new Product('Shitty Chair', 'chair.jpg');
+    const prodChair = new Product('Silly Chair', 'chair.jpg');
     products.push(prodChair);
     prodChair.index = (products.length - 1);
 
@@ -84,7 +87,7 @@ function createProducts () {
     products.push(prodUSB);
     prodUSB.index = (products.length - 1);
 
-    const prodWaterCan = new Product('Shitty Wattering Can', 'water-can.jpg');
+    const prodWaterCan = new Product('Silly Wattering Can', 'water-can.jpg');
     products.push(prodWaterCan);
     prodWaterCan.index = (products.length - 1);
 
@@ -95,9 +98,9 @@ function createProducts () {
 
 createProducts();
 
-// creates the tabe and names the cells td0, td1, and td2
+// creates the table and names the cells td0, td1, and td2
 const section = document.getElementById('test-section');
-const table = document.createElement('table');
+let table = document.createElement('table');
 table.setAttribute('id', 'vote-table');
 section.appendChild(table);
 
@@ -123,6 +126,8 @@ const renderImages = function() {
         const randomNumber = Math.floor(Math.random() * (products.length));
         const randomProduct = (products[randomNumber]);
 
+        randomProduct.prodRendered += 1;
+
         if (activeObjects.includes(randomProduct)) continue;
 
         activeObjects.push(randomProduct);
@@ -140,6 +145,9 @@ let clickCounter = 0;
 
 table.addEventListener('click', function () {
     const clickedImage = event.target;
+
+    const footerCounter = document.getElementById('footer-counter');
+    footerCounter.textContent = 'Choices: ' + clickCounter + ' out of 25'
 
     const clickProcess = function(x) {
         activeObjects[x].prodVotes += 1;
@@ -168,19 +176,65 @@ table.addEventListener('click', function () {
 
 });
 
-// renders the list with the results
+// renders the final data table with the results
 const renderResultsTable = function() {
-    const table = document.getElementById('vote-table');
+    const header = document.getElementById('header');
+    header.remove();
+
+    const footerCounter = document.getElementById('footer-counter');
+    footerCounter.remove();
+
+    table = document.getElementById('vote-table');
     table.remove();
 
     const section = document.getElementById('test-section');
-    const list = document.createElement('ul');
-    section.appendChild(list);
+    table = document.createElement('table');
+    section.appendChild(table);
+
+    const thead = document.createElement('thead');
+    table.appendChild(thead);
+
+    const tr = document.createElement('tr');
+    thead.appendChild(tr);
+
+    const thOne = document.createElement('th');
+    tr.appendChild(thOne);
+    thOne.textContent = 'Product';
+    
+    const thTwo = document.createElement('th');
+    tr.appendChild(thTwo);
+    thTwo.textContent = 'Times Displayed';
+
+    const thThree = document.createElement('th');
+    tr.appendChild(thThree);
+    thThree.textContent = 'Times Selected';
+    
+    const thFour = document.createElement('th');
+    tr.appendChild(thFour);
+    thFour.textContent = 'Percentage Selected';
 
     for(let i = 0; i < products.length; i++) {
-        const li = document.createElement('li');
-        list.appendChild(li);
-        li.textContent = products[i].prodVotes + ' for ' + products[i].prodName;
+        const tr = document.createElement('tr');
+        table.appendChild(tr);
 
+        let td = document.createElement('td');
+        tr.appendChild(td);
+        td.textContent = products[i].prodName;
+
+        td = document.createElement('td');
+        tr.appendChild(td);
+        td.textContent = products[i].prodRendered;
+
+        td = document.createElement('td');
+        tr.appendChild(td);
+        td.textContent = products[i].prodVotes;
+
+        td = document.createElement('td');
+        tr.appendChild(td);
+
+        if (products[i].prodVotes > 0) {
+            products[i].prodPercent = (((products[i].prodVotes)/(products[i].prodRendered)) * 100);
+            td.textContent = (Math.floor(products[i].prodPercent)) + '%';
+        }
     }
 }
