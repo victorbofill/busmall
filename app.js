@@ -38,7 +38,7 @@ function createProducts () {
     products.push(prodMeatGum);
     prodMeatGum.index = (products.length - 1);
 
-    const prodChair = new Product('Shitty Chair', 'chair.jpg');
+    const prodChair = new Product('Silly Chair', 'chair.jpg');
     products.push(prodChair);
     prodChair.index = (products.length - 1);
 
@@ -86,7 +86,7 @@ function createProducts () {
     products.push(prodUSB);
     prodUSB.index = (products.length - 1);
 
-    const prodWaterCan = new Product('Shitty Wattering Can', 'water-can.jpg');
+    const prodWaterCan = new Product('Silly Wattering Can', 'water-can.jpg');
     products.push(prodWaterCan);
     prodWaterCan.index = (products.length - 1);
 
@@ -166,13 +166,22 @@ table.addEventListener('click', function () {
         clickProcess(2);
     };
 
-    if (clickCounter === 3) {
+    if (clickCounter === 25) {
         renderResultsTable();
     }
+
+    const footerCounter = document.getElementById('footer-counter');
+    footerCounter.textContent = 'Choices: ' + clickCounter + ' out of 25'
 });
 
-// renders the table with the results
+// renders the final data table with the results
 const renderResultsTable = function() {
+    const header = document.getElementById('header');
+    header.remove();
+
+    const footerCounter = document.getElementById('footer-counter');
+    footerCounter.remove();
+
     table = document.getElementById('vote-table');
     table.remove();
 
@@ -222,8 +231,8 @@ const renderResultsTable = function() {
         tr.appendChild(td);
 
         if (products[i].prodVotes > 0) {
-            products[i].prodPercent = ((products[i].prodVotes)/(products[i].prodRendered));
-            td.textContent = ((products[i].prodPercent) * 100) + '%';
+            products[i].prodPercent = (((products[i].prodVotes)/(products[i].prodRendered)) * 100);
+            td.textContent = (Math.floor(products[i].prodPercent)) + '%';
         }
     }
 }
