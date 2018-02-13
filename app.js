@@ -98,6 +98,7 @@ createProducts();
 // creates the tabe and names the cells td0, td1, and td2
 const section = document.getElementById('test-section');
 const table = document.createElement('table');
+table.setAttribute('id', 'vote-table');
 section.appendChild(table);
 
 const tr = document.createElement('tr');
@@ -117,15 +118,19 @@ let activeObjects = [];
 let activeImage = [];
 
 const renderImages = function() {
-    for (let i = 0; i < 3; i++) {
+    let i = 0;
+    while (activeObjects.length < 3) {
         const randomNumber = Math.floor(Math.random() * (products.length));
         const randomProduct = (products[randomNumber]);
+
+        if (activeObjects.includes(randomProduct)) continue;
 
         activeObjects.push(randomProduct);
 
         const img = document.getElementById((i));
         img.setAttribute('src', 'img/' + activeObjects[i].prodImage);
-        activeImage.push(img);
+        activeImage.push(img);   
+        i++;
     }
 };
 
@@ -165,6 +170,17 @@ table.addEventListener('click', function () {
 
 // renders the table with the results
 const renderResultsTable = function() {
-    const table = document.querySelector('table');
+    const table = document.getElementById('vote-table');
     table.remove();
+
+    const section = document.getElementById('test-section');
+    const list = document.createElement('ul');
+    section.appendChild(list);
+
+    for(let i = 0; i < products.length; i++) {
+        const li = document.createElement('li');
+        list.appendChild(li);
+        li.textContent = products[i].prodVotes + ' for ' + products[i].prodName;
+
+    }
 }

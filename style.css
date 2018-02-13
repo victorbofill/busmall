@@ -19,3 +19,11 @@ img {
     height: inherit;
     width: inherit;
 }
+
+ul {
+    list-style-type: none;
+}
+
+li {
+    font-size: 2em;
+}
