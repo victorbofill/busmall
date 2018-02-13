@@ -37,6 +37,10 @@ img {
     width: inherit;
 }
 
+#bar-chart {
+    display: none;
+}
+
 footer {
     text-align: center;
 }

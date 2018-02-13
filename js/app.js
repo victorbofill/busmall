@@ -154,6 +154,10 @@ table.addEventListener('click', function () {
 
 });
 
+// renders the final results as a bar graph
+
+
+
 // renders the final data table with the results
 const renderResultsTable = function() {
     const header = document.getElementById('header');
@@ -216,3 +220,7 @@ const renderResultsTable = function() {
         }
     }
 };
+
+const canvas = document.getElementById('canvas');
+const canvasCTX = canvas.getContext('2d');
+
