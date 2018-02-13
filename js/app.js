@@ -148,18 +148,16 @@ table.addEventListener('click', function () {
         clickProcess(2);
     };
 
-    if (clickCounter === 25) {
-        renderResultsTable();
+    if (clickCounter === 3) {
+        renderResultsGraph();
     }
 
 });
 
 // renders the final results as a bar graph
 
+const renderResultsGraph = function() {
 
-
-// renders the final data table with the results
-const renderResultsTable = function() {
     const header = document.getElementById('header');
     header.remove();
 
@@ -169,58 +167,121 @@ const renderResultsTable = function() {
     table = document.getElementById('vote-table');
     table.remove();
 
-    const section = document.getElementById('test-section');
-    table = document.createElement('table');
-    section.appendChild(table);
+    const canvas = document.getElementById('canvas');
+    canvas.removeAttribute('class', 'hidden');
 
-    const thead = document.createElement('thead');
-    table.appendChild(thead);
+    const ctx = canvas.getContext('2d');
 
-    const tr = document.createElement('tr');
-    thead.appendChild(tr);
+    const barChartData = {
+        labels: [products[0].prodName, products[1].prodName, products[2].prodName, products[3].prodName,
+            products[4].prodName, products[5].prodName, products[6].prodName, products[7].prodName,
+            products[8].prodName, products[9].prodName, products[10].prodName, products[11].prodName,
+            products[12].prodName, products[13].prodName, products[14].prodName, products[15].prodName,
+            products[16].prodName, products[17].prodName, products[18].prodName, products[19].prodName
+        ],
+        datasets: [{
+            label:'Times Rendered',
+            backgroundColor: 'rgb(75, 25, 25)',
+            stack: 'Stack 0',
+            data: [
+                products[0].prodRendered,
+                products[1].prodRendered,
+                products[2].prodRendered,
+                products[3].prodRendered,
+                products[4].prodRendered,
+                products[5].prodRendered,
+                products[6].prodRendered,
+                products[7].prodRendered,
+                products[8].prodRendered,
+                products[9].prodRendered,
+                products[10].prodRendered,
+                products[11].prodRendered,
+                products[12].prodRendered,
+                products[13].prodRendered,
+                products[14].prodRendered,
+                products[15].prodRendered,
+                products[16].prodRendered,
+                products[17].prodRendered,
+                products[18].prodRendered,
+                products[19].prodRendered,
+            ]}, {
+            label: 'Times Selected',
+            backgroundColor: 'rgb(25, 75, 25)',
+            stack: 'Stack 0',
+            data: [
+                products[0].prodVotes,
+                products[1].prodVotes,
+                products[2].prodVotes,
+                products[3].prodVotes,
+                products[4].prodVotes,
+                products[5].prodVotes,
+                products[6].prodVotes,
+                products[7].prodVotes,
+                products[8].prodVotes,
+                products[9].prodVotes,
+                products[10].prodVotes,
+                products[11].prodVotes,
+                products[12].prodVotes,
+                products[13].prodVotes,
+                products[14].prodVotes,
+                products[15].prodVotes,
+                products[16].prodVotes,
+                products[17].prodVotes,
+                products[18].prodVotes,
+                products[19].prodVotes,
+            ]
+        }, {
+            label: 'Percent Selected',
+            backgroundColor: 'rgb(25, 25, 75)',
+            stack: 'Stak 1',
+            data: [
+                products[0].prodPercent,
+                products[1].prodPercent,
+                products[2].prodPercent,
+                products[3].prodPercent,
+                products[4].prodPercent,
+                products[5].prodPercent,
+                products[6].prodPercent,
+                products[7].prodPercent,
+                products[8].prodPercent,
+                products[9].prodPercent,
+                products[10].prodPercent,
+                products[11].prodPercent,
+                products[12].prodPercent,
+                products[13].prodPercent,
+                products[14].prodPercent,
+                products[15].prodPercent,
+                products[16].prodPercent,
+                products[17].prodPercent,
+                products[18].prodPercent,
+                products[19].prodPercent,
+            ]
+        }],
+    };
 
-    const thOne = document.createElement('th');
-    tr.appendChild(thOne);
-    thOne.textContent = 'Product';
-
-    const thTwo = document.createElement('th');
-    tr.appendChild(thTwo);
-    thTwo.textContent = 'Times Displayed';
-
-    const thThree = document.createElement('th');
-    tr.appendChild(thThree);
-    thThree.textContent = 'Times Selected';
-
-    const thFour = document.createElement('th');
-    tr.appendChild(thFour);
-    thFour.textContent = 'Percentage Selected';
-
-    for(let i = 0; i < products.length; i++) {
-        const tr = document.createElement('tr');
-        table.appendChild(tr);
-
-        let td = document.createElement('td');
-        tr.appendChild(td);
-        td.textContent = products[i].prodName;
-
-        td = document.createElement('td');
-        tr.appendChild(td);
-        td.textContent = products[i].prodRendered;
-
-        td = document.createElement('td');
-        tr.appendChild(td);
-        td.textContent = products[i].prodVotes;
-
-        td = document.createElement('td');
-        tr.appendChild(td);
-
-        if (products[i].prodVotes > 0) {
-            products[i].prodPercent = (((products[i].prodVotes) / (products[i].prodRendered)) * 100);
-            td.textContent = (Math.floor(products[i].prodPercent)) + '%';
+    const chart = new Chart (ctx, {
+        type: 'bar',
+        data: barChartData,
+        options: {
+            title: {
+                display: true,
+                text: 'Results of Your Survey'
+            },
+            tooltips: {
+                mode: 'index',
+                intersect: false
+            },
+            responsive: true,
+            scales: {
+                xAxes: [{
+                    stacked: true
+                }],
+                yAxes: [{
+                    stacked: true
+                }]
+            }
         }
-    }
+    });
+
+    chart.update();
 };
-
-const canvas = document.getElementById('canvas');
-const canvasCTX = canvas.getContext('2d');
-

@@ -37,7 +37,7 @@ img {
     width: inherit;
 }
 
-#bar-chart {
+.hidden {
     display: none;
 }
 
