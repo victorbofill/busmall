@@ -148,7 +148,7 @@ table.addEventListener('click', function () {
         clickProcess(2);
     };
 
-    if (clickCounter === 3) {
+    if (clickCounter === 25) {
 
         const calcVotePercentage = function(object) {
             if (object.prodVotes > 0) {
