@@ -1,7 +1,3 @@
-body {
-    background-color: khaki;
-}
-
 header {
     text-align: center;
 }
@@ -20,7 +16,6 @@ td {
 }
 
 #vote-table {
-    background-color: khaki;
     border-spacing: 2em;
 }
 

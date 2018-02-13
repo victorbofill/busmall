@@ -148,11 +148,23 @@ table.addEventListener('click', function () {
         clickProcess(2);
     };
 
-    if (clickCounter === 3) {
+    if (clickCounter === 25) {
+
+        const calcVotePercentage = function(object) {
+            if (object.prodVotes > 0) {
+                object.prodPercent = (((object.prodVotes) / (object.prodRendered)) * 100);
+            }
+        };
+
+        for (let i = 0; i < products.length; i++) {
+            const object = products[i];
+            calcVotePercentage(object);
+        }
+
         renderResultsGraph();
     }
-
 });
+
 
 // renders the final results as a bar graph
 
@@ -181,7 +193,7 @@ const renderResultsGraph = function() {
         ],
         datasets: [{
             label:'Times Rendered',
-            backgroundColor: 'rgb(75, 25, 25)',
+            backgroundColor: 'rgb(225, 0, 0)',
             stack: 'Stack 0',
             data: [
                 products[0].prodRendered,
@@ -206,7 +218,7 @@ const renderResultsGraph = function() {
                 products[19].prodRendered,
             ]}, {
             label: 'Times Selected',
-            backgroundColor: 'rgb(25, 75, 25)',
+            backgroundColor: 'rgb(0, 225, 0)',
             stack: 'Stack 0',
             data: [
                 products[0].prodVotes,
@@ -230,36 +242,10 @@ const renderResultsGraph = function() {
                 products[18].prodVotes,
                 products[19].prodVotes,
             ]
-        }, {
-            label: 'Percent Selected',
-            backgroundColor: 'rgb(25, 25, 75)',
-            stack: 'Stak 1',
-            data: [
-                products[0].prodPercent,
-                products[1].prodPercent,
-                products[2].prodPercent,
-                products[3].prodPercent,
-                products[4].prodPercent,
-                products[5].prodPercent,
-                products[6].prodPercent,
-                products[7].prodPercent,
-                products[8].prodPercent,
-                products[9].prodPercent,
-                products[10].prodPercent,
-                products[11].prodPercent,
-                products[12].prodPercent,
-                products[13].prodPercent,
-                products[14].prodPercent,
-                products[15].prodPercent,
-                products[16].prodPercent,
-                products[17].prodPercent,
-                products[18].prodPercent,
-                products[19].prodPercent,
-            ]
         }],
     };
 
-    const chart = new Chart (ctx, {
+    const chart = new Chart (ctx, { // eslint-disable-line
         type: 'bar',
         data: barChartData,
         options: {
@@ -274,10 +260,15 @@ const renderResultsGraph = function() {
             responsive: true,
             scales: {
                 xAxes: [{
-                    stacked: true
-                }],
-                yAxes: [{
-                    stacked: true
+                    stacked: true,
+                    beginAtZero: true,
+                    ticks: {
+                        autoSkip: false
+                    },
+                
+                    yAxes: [{
+                        stacked: true
+                    }]
                 }]
             }
         }
