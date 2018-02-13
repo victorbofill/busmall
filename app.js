@@ -109,17 +109,62 @@ for (let i = 0; i < 3; i++) {
 
     const img = document.createElement('img');
     td.appendChild(img);
-    img.setAttribute('id', ('img' + i));
+    img.setAttribute('id', (i));
 };
+
+// renders three images on the table and stores which ones are active in an array
+let activeObjects = [];
+let activeImage = [];
 
 const renderImages = function() {
     for (let i = 0; i < 3; i++) {
         const randomNumber = Math.floor(Math.random() * (products.length));
-        const image = (products[randomNumber]).prodImage;
+        const randomProduct = (products[randomNumber]);
 
-        const img = document.getElementById(('img' + i));
-        img.setAttribute('src', 'img/' + image);
+        activeObjects.push(randomProduct);
+
+        const img = document.getElementById((i));
+        img.setAttribute('src', 'img/' + activeObjects[i].prodImage);
+        activeImage.push(img);
     }
 };
 
 renderImages();
+
+let clickCounter = 0;
+
+table.addEventListener('click', function () {
+    const clickedImage = event.target;
+
+    const clickProcess = function(x) {
+        activeObjects[x].prodVotes += 1;
+        activeObjects = [];
+        activeImage = [];
+        clickCounter++;
+        renderImages();
+        console.log(clickCounter);
+    }
+
+    if (clickedImage === activeImage[0]) {
+        clickProcess(0);
+    };
+
+    if (clickedImage === activeImage[1]) {
+        clickProcess(1);
+    };
+
+    if (clickedImage === activeImage[2]) {
+        clickProcess(2);
+    };
+
+    if (clickCounter === 25) {
+        renderResultsTable();
+    }
+
+});
+
+// renders the table with the results
+const renderResultsTable = function() {
+    const table = document.querySelector('table');
+    table.remove();
+}
