@@ -2,13 +2,13 @@ body {
     background-color: khaki;
 }
 
-table {
+#vote-table {
     border-collapse: separate;
     border-spacing: 2em;
     margin: 0 auto;
 }
 
-td {
+#vote-table td {
     background-color: black;
     height: 20em;
     padding: .5em;
