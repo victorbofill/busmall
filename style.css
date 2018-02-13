@@ -1,0 +1,21 @@
+body {
+    background-color: khaki;
+}
+
+table {
+    border-collapse: separate;
+    border-spacing: 2em;
+    margin: 0 auto;
+}
+
+td {
+    background-color: black;
+    height: 20em;
+    padding: .5em;
+    width: 20em;
+}
+
+img {
+    height: inherit;
+    width: inherit;
+}
