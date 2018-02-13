@@ -8,8 +8,7 @@ function Product (prodName, prodImage) {
     this.prodVotes = 0,
     this.prodRendered = 0;
     this.prodPercent = 0;
-    this.prodDisplayed = false,
-    this.index
+    this.prodDisplayed = false
 };
 
 // creates all of the products and populates the products array with them as objects
@@ -17,51 +16,39 @@ function createProducts () {
     const prodR2Bag = new 
     Product('R2-D2 Bag', 'bag.jpg');
     products.push(prodR2Bag);
-    prodR2Bag.index = (products.length - 1);
 
     const prodBanana = new Product('Banana Slicer', 'banana.jpg');
     products.push(prodBanana);
-    prodBanana.index = (products.length - 1);
 
     const prodTPStand = new Product('TP Tablet Stand', 'bathroom.jpg');
     products.push(prodTPStand);
-    prodTPStand.index = (products.length - 1);
 
     const prodBoots = new Product('Boots', 'boots.jpg');
     products.push(prodBoots);
-    prodBoots.index = (products.length - 1);
 
     const prodBFast = new Product('Breakfast Machine', 'breakfast.jpg');
     products.push(prodBFast);
-    prodBFast.index = (products.length - 1);
 
     const prodMeatGum = new Product('Meatball Bubblegum', 'bubblegum.jpg');
     products.push(prodMeatGum);
-    prodMeatGum.index = (products.length - 1);
 
     const prodChair = new Product('Silly Chair', 'chair.jpg');
     products.push(prodChair);
-    prodChair.index = (products.length - 1);
 
     const prodCthulu = new Product('Cthulhu', 'cthulhu.jpg');
     products.push(prodCthulu);
-    prodCthulu.index = (products.length - 1);
 
     const prodDuckLips = new Product('Dog Duck Lips', 'dog-duck.jpg');
     products.push(prodDuckLips);
-    prodDuckLips.index = (products.length - 1);
 
     const prodDragon = new Product('Dragon Meat', 'dragon.jpg');
     products.push(prodDragon);
-    prodDragon.index = (products.length - 1);
 
     const prodPen = new Product('Utensil Pen', 'pen.jpg');
     products.push(prodPen);
-    prodPen.index = (products.length - 1);
 
     const prodPetSweep = new Product('Pet Sweeping Shoes', 'pet-sweep.jpg');
     products.push(prodPetSweep);
-    prodPetSweep.index = (products.length - 1);
 
     const prodScissors = new Product('Pizza Scissors', 'scissors.jpg');
     products.push(prodScissors);
@@ -69,31 +56,24 @@ function createProducts () {
 
     const prodShark = new Product('Shark Sleeping Bag', 'shark.jpg');
     products.push(prodShark);
-    prodShark.index = (products.length - 1);
 
     const prodBabySweep = new Product('Baby Sweeping Suit', 'sweep.png');
     products.push(prodBabySweep);
-    prodBabySweep.index = (products.length - 1);
 
     const prodTaunTaun = new Product('Tauntuan Sleeping Bag', 'tauntaun.jpg');
     products.push(prodTaunTaun);
-    prodTaunTaun.index = (products.length - 1);
 
     const prodUnicorn = new Product('Unicorn Meat', 'unicorn.jpg');
     products.push(prodUnicorn);
-    prodUnicorn.index = (products.length - 1);
 
     const prodUSB = new Product('Tentacle USB Stick', 'usb.gif');
     products.push(prodUSB);
-    prodUSB.index = (products.length - 1);
 
     const prodWaterCan = new Product('Silly Wattering Can', 'water-can.jpg');
     products.push(prodWaterCan);
-    prodWaterCan.index = (products.length - 1);
 
     const prodWineGlass = new Product('Drunk Proof Wineglass', 'wine-glass.jpg');
     products.push(prodWineGlass);
-    prodWineGlass.index = (products.length - 1);
 }
 
 createProducts();
