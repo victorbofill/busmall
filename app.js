@@ -168,7 +168,7 @@ table.addEventListener('click', function () {
 
 });
 
-// renders the table with the results
+// renders the list with the results
 const renderResultsTable = function() {
     const table = document.getElementById('vote-table');
     table.remove();
