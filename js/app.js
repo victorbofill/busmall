@@ -148,7 +148,7 @@ table.addEventListener('click', function () {
         clickProcess(2);
     };
 
-    if (clickCounter === 25) {
+    if (clickCounter === 3) {
 
         const calcVotePercentage = function(object) {
             if (object.prodVotes > 0) {
@@ -161,14 +161,14 @@ table.addEventListener('click', function () {
             calcVotePercentage(object);
         }
 
-        renderResultsGraph();
+        renderVotesGraph();
     }
 });
 
 
 // renders the final results as a bar graph
 
-const renderResultsGraph = function() {
+const renderVotesGraph = function() {
 
     const header = document.getElementById('header');
     header.remove();
@@ -179,12 +179,16 @@ const renderResultsGraph = function() {
     table = document.getElementById('vote-table');
     table.remove();
 
-    const canvas = document.getElementById('canvas');
-    canvas.removeAttribute('class', 'hidden');
+    const votesCanvas = document.getElementById('votesCanvas');
+    votesCanvas.removeAttribute('class', 'hidden');
 
-    const ctx = canvas.getContext('2d');
+    const percentCanvas = document.getElementById('percentCanvas');
+    percentCanvas.removeAttribute('class', 'hidden');
 
-    const barChartData = {
+    const ctx = votesCanvas.getContext('2d');
+    const ctxPerc = percentCanvas.getContext('2d');
+
+    const voteData = {
         labels: [products[0].prodName, products[1].prodName, products[2].prodName, products[3].prodName,
             products[4].prodName, products[5].prodName, products[6].prodName, products[7].prodName,
             products[8].prodName, products[9].prodName, products[10].prodName, products[11].prodName,
@@ -215,9 +219,9 @@ const renderResultsGraph = function() {
                 products[16].prodRendered,
                 products[17].prodRendered,
                 products[18].prodRendered,
-                products[19].prodRendered,
-            ]}, {
-            label: 'Times Selected',
+                products[19].prodRendered
+            ]},
+        {label: 'Times Selected',
             backgroundColor: 'rgb(0, 225, 0)',
             stack: 'Stack 0',
             data: [
@@ -240,14 +244,14 @@ const renderResultsGraph = function() {
                 products[16].prodVotes,
                 products[17].prodVotes,
                 products[18].prodVotes,
-                products[19].prodVotes,
+                products[19].prodVotes
             ]
         }],
     };
 
-    const chart = new Chart (ctx, { // eslint-disable-line
+    const voteChart = new Chart (ctx, { // eslint-disable-line
         type: 'bar',
-        data: barChartData,
+        data: voteData,
         options: {
             title: {
                 display: true,
@@ -265,7 +269,7 @@ const renderResultsGraph = function() {
                     ticks: {
                         autoSkip: false
                     },
-                
+
                     yAxes: [{
                         stacked: true
                     }]
@@ -274,5 +278,71 @@ const renderResultsGraph = function() {
         }
     });
 
-    chart.update();
+    const percentData = {
+        labels: [products[0].prodName, products[1].prodName, products[2].prodName, products[3].prodName,
+            products[4].prodName, products[5].prodName, products[6].prodName, products[7].prodName,
+            products[8].prodName, products[9].prodName, products[10].prodName, products[11].prodName,
+            products[12].prodName, products[13].prodName, products[14].prodName, products[15].prodName,
+            products[16].prodName, products[17].prodName, products[18].prodName, products[19].prodName
+        ],
+        datasets: [{
+            label:'Percent Selected',
+            backgroundColor: 'rgb(0, 0, 255)',
+            stack: 'Stack 0',
+            data: [
+                products[0].prodPercent,
+                products[1].prodPercent,
+                products[2].prodPercent,
+                products[3].prodPercent,
+                products[4].prodPercent,
+                products[5].prodPercent,
+                products[6].prodPercent,
+                products[7].prodPercent,
+                products[8].prodPercent,
+                products[9].prodPercent,
+                products[10].prodPercent,
+                products[11].prodPercent,
+                products[12].prodPercent,
+                products[13].prodPercent,
+                products[14].prodPercent,
+                products[15].prodPercent,
+                products[16].prodPercent,
+                products[17].prodPercent,
+                products[18].prodPercent,
+                products[19].prodPercent
+            ]},
+        ],
+    };
+
+    const percentChart = new Chart (ctxPerc, { // eslint-disable-line
+        type: 'bar',
+        data: percentData,
+        options: {
+            title: {
+                display: true,
+                text: 'Results of Your Survey'
+            },
+            tooltips: {
+                mode: 'index',
+                intersect: false
+            },
+            responsive: true,
+            scales: {
+                xAxes: [{
+                    stacked: true,
+                    beginAtZero: true,
+                    ticks: {
+                        autoSkip: false
+                    },
+
+                    yAxes: [{
+                        stacked: true
+                    }]
+                }]
+            }
+        }
+    });
+
+    voteChart.update();
+    percentChart.update();
 };
