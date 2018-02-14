@@ -1,6 +1,6 @@
 'use strict';
 
-let products = [];
+const products = [];
 let activeObjects = [];
 let activeImage = [];
 let clickCounter = 0;
@@ -188,8 +188,20 @@ const renderGraphs = function() {
     const chartDiv = document.getElementById('chart-div');
     chartDiv.removeAttribute('class', 'hidden');
 
-    const votesCanvas = document.getElementById('votesCanvas');
-    const percentCanvas = document.getElementById('percentCanvas');
+    const votesCanvas = document.createElement('canvas');
+    const percentCanvas = document.createElement('canvas');
+
+    chartDiv.appendChild(votesCanvas);
+    chartDiv.appendChild(percentCanvas);
+
+    votesCanvas.setAttribute('height', '100px');
+    percentCanvas.setAttribute('height', '100px');
+
+    votesCanvas.setAttribute('width', '200px');
+    percentCanvas.setAttribute('width', '200px');
+
+    votesCanvas.setAttribute('id', 'votes-canvas');
+    percentCanvas.setAttribute('id', 'percent-canvas');
 
     const ctx = votesCanvas.getContext('2d');
     const ctxPerc = percentCanvas.getContext('2d');
@@ -361,10 +373,18 @@ button.addEventListener('click', function () {
 
     for (let i = 0; i < products.length; i++) {
         products[i].prodPercent = 0;
+        products[i].prodVotes = 0;
+        products[i].prodRendered = 0;
     }
 
+    const votesCanvas = document.getElementById('votes-canvas');
+    votesCanvas.remove();
+
+    const percentCanvas = document.getElementById('percent-canvas');
+    percentCanvas.remove();
+
     const chartDiv = document.getElementById('chart-div');
-    chartDiv.setAttribute('class', 'hidden');   
+    chartDiv.setAttribute('class', 'hidden');
 
     renderTable();
     renderImages();
