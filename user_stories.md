@@ -1,7 +1,6 @@
 # BusMall Market Research
 ## Research into product demand
 ### To-do User Stories for research app
-As a market researcher, I want all voting data to persist through surveys, reloads, and browser resets.<br/>
 
 ### Stretch Goals
 As a developer, I want to move my code into an object.<br/>
@@ -24,6 +23,7 @@ As a market researcher, I want to view the results of the survey as a bar chart.
 As a developer, I want to use Chart.js to construct the bar chart.<br/>
 As a market researcher, I want to see the percentages of times a product was selected out of how many times it was displayed.<br/>
 As a developer, I want to include a button that will restart the survey for the next customer.<br/>
+As a market researcher, I want all voting data to persist through surveys, reloads, and browser resets.<br/>
 
 ### Goals to be written as user stories
 
