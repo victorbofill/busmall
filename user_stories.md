@@ -1,6 +1,7 @@
 # BusMall Market Research
 ## Research into product demand
 ### To-do User Stories for research app
+As a market researcher, I want all voting data to persist through surveys, reloads, and browser resets.
 
 ### Stretch Goals
 As a developer, I want to move my code into an object.
@@ -8,6 +9,9 @@ As a market researcher, I want to control the experiment by disallowing an image
 As a customer, I want some background music to enjoy while I am taking the survey.
 As a customer, I want to be able to pause the music.
 As a customer, I want to be rewarded for my completion of the survey with a fun graphic or animation.
+As a market researcher, I want to see the most recent survey results as well as the total.
+As a market researcher, I want to be able to manually reset all data.
+As a developer, I want to improve the UX for both market researchers and customers.
 
 ### Complete User Stories for research app
 As a market researcher, I want customers to make one choice of three options, depicted as pictures.
