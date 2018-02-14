@@ -1,6 +1,6 @@
 'use strict';
 
-const products = [];
+let products = [];
 let activeObjects = [];
 let activeImage = [];
 let clickCounter = 0;
@@ -157,8 +157,8 @@ const activateListener = function() {
             clickProcess(2);
         };
 
-        if (clickCounter === 3) {
-            
+        if (clickCounter === 25) {
+
             for (let i = 0; i < products.length; i++) {
                 const object = products[i];
 
@@ -194,7 +194,7 @@ const renderGraphs = function() {
     votesCanvas.setAttribute('width', '200px');
     votesCanvas.setAttribute('id', 'votes-canvas');
     const ctx = votesCanvas.getContext('2d');
-    
+
     const percentCanvas = document.createElement('canvas');
     chartDiv.appendChild(percentCanvas);
     percentCanvas.setAttribute('height', '100px');
@@ -366,10 +366,6 @@ button.addEventListener('click', function () {
     activeImage = [];
     clickCounter = 0;
 
-    for (let i = 0; i < products.length; i++) {
-        products[i].prodPercent = 0;
-    }
-
     const votesCanvas = document.getElementById('votes-canvas');
     votesCanvas.remove();
 
@@ -384,7 +380,7 @@ button.addEventListener('click', function () {
     activateListener();
 });
 
-if (localStorage.getItem('donations')) {
+if (localStorage.getItem('products')) {
     products = JSON.parse(localStorage.getItem('products'));
 } else {
     createProducts();
