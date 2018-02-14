@@ -1,6 +1,9 @@
 'use strict';
 
-const products = [];
+let products = [];
+let activeObjects = [];
+let activeImage = [];
+let clickCounter = 0;
 
 function Product (prodName, prodImage) {
     this.prodName = prodName,
@@ -10,7 +13,6 @@ function Product (prodName, prodImage) {
     this.prodPercent = 0;
 };
 
-// creates all of the products and populates the products array with them as objects
 function createProducts () {
     const prodR2Bag = new Product('R2-D2 Bag', 'bag.jpg');
     products.push(prodR2Bag);
@@ -74,29 +76,35 @@ function createProducts () {
     products.push(prodWineGlass);
 }
 
-createProducts();
+const renderTable = function () {
+    const header = document.getElementById('header');
+    const h3 = document.createElement('h3');
+    header.appendChild(h3);
+    h3.textContent = 'Click on the image of the product you would most likely purchase';
+    h3.setAttribute('id', 'header-message');
 
-// creates the table and names the cells td0, td1, and td2
-const section = document.getElementById('test-section');
-let table = document.createElement('table');
-table.setAttribute('id', 'vote-table');
-section.appendChild(table);
+    const section = document.getElementById('test-section');
+    const table = document.createElement('table');
+    table.setAttribute('id', 'vote-table');
+    section.appendChild(table);
 
-const tr = document.createElement('tr');
-table.appendChild(tr);
+    const tr = document.createElement('tr');
+    table.appendChild(tr);
 
-for (let i = 0; i < 3; i++) {
-    const td = document.createElement('td');
-    tr.appendChild(td);
+    for (let i = 0; i < 3; i++) {
+        const td = document.createElement('td');
+        tr.appendChild(td);
 
-    const img = document.createElement('img');
-    td.appendChild(img);
-    img.setAttribute('id', (i));
+        const img = document.createElement('img');
+        td.appendChild(img);
+        img.setAttribute('id', (i));
+    };
+
+    const footer = document.getElementById('footer');
+    const h3Two = document.createElement('h3');
+    footer.appendChild(h3Two);
+    h3Two.setAttribute('id', 'footer-counter');
 };
-
-// renders three images on the table and stores which ones are active in an array
-let activeObjects = [];
-let activeImage = [];
 
 const renderImages = function() {
     let i = 0;
@@ -117,73 +125,71 @@ const renderImages = function() {
     }
 };
 
-renderImages();
+const activateListener = function() {
 
-let clickCounter = 0;
+    const table = document.getElementById('vote-table');
 
-table.addEventListener('click', function () {
-    const clickedImage = event.target;
+    table.addEventListener('click', function () {
+        const clickedImage = event.target;
 
-    const footerCounter = document.getElementById('footer-counter');
+        const footerCounter = document.getElementById('footer-counter');
 
-    const clickProcess = function(x) {
-        activeObjects[x].prodVotes += 1;
-        activeObjects = [];
-        activeImage = [];
-        clickCounter++;
-        footerCounter.textContent = 'Choices: ' + clickCounter + ' out of 25';
-        renderImages();
-        console.log(clickCounter);
-    };
-
-    if (clickedImage === activeImage[0]) {
-        clickProcess(0);
-    };
-
-    if (clickedImage === activeImage[1]) {
-        clickProcess(1);
-    };
-
-    if (clickedImage === activeImage[2]) {
-        clickProcess(2);
-    };
-
-    if (clickCounter === 25) {
-
-        const calcVotePercentage = function(object) {
-            if (object.prodVotes > 0) {
-                object.prodPercent = (((object.prodVotes) / (object.prodRendered)) * 100);
-            }
+        const clickProcess = function(x) {
+            activeObjects[x].prodVotes += 1;
+            activeObjects = [];
+            activeImage = [];
+            clickCounter++;
+            footerCounter.textContent = 'Choices: ' + clickCounter + ' out of 25';
+            renderImages();
+            console.log(clickCounter);
         };
 
-        for (let i = 0; i < products.length; i++) {
-            const object = products[i];
-            calcVotePercentage(object);
+        if (clickedImage === activeImage[0]) {
+            clickProcess(0);
+        };
+
+        if (clickedImage === activeImage[1]) {
+            clickProcess(1);
+        };
+
+        if (clickedImage === activeImage[2]) {
+            clickProcess(2);
+        };
+
+        if (clickCounter === 3) {
+
+            const calcVotePercentage = function(object) {
+                if (object.prodVotes > 0) {
+                    object.prodPercent = (((object.prodVotes) / (object.prodRendered)) * 100);
+                }
+            };
+
+            for (let i = 0; i < products.length; i++) {
+                const object = products[i];
+                calcVotePercentage(object);
+            }
+
+            renderGraphs();
         }
+    });
+};
 
-        renderVotesGraph();
-    }
-});
+const renderGraphs = function() {
 
-
-// renders the final results as a bar graph
-
-const renderVotesGraph = function() {
-
-    const header = document.getElementById('header');
+    const header = document.getElementById('header-message');
     header.remove();
 
     const footerCounter = document.getElementById('footer-counter');
     footerCounter.remove();
 
-    table = document.getElementById('vote-table');
+    const table = document.getElementById('vote-table');
     table.remove();
 
-    const votesCanvas = document.getElementById('votesCanvas');
-    votesCanvas.removeAttribute('class', 'hidden');
+    const chartDiv = document.getElementById('chart-div');
+    chartDiv.removeAttribute('class', 'hidden');
 
+    const votesCanvas = document.getElementById('votesCanvas');
     const percentCanvas = document.getElementById('percentCanvas');
-    percentCanvas.removeAttribute('class', 'hidden');
 
     const ctx = votesCanvas.getContext('2d');
     const ctxPerc = percentCanvas.getContext('2d');
@@ -346,3 +352,26 @@ const renderVotesGraph = function() {
     voteChart.update();
     percentChart.update();
 };
+
+const button = document.getElementById('button');
+button.addEventListener('click', function () {
+    activeObjects = [];
+    activeImage = [];
+    clickCounter = 0;
+
+    for (let i = 0; i < products.length; i++) {
+        products[i].prodPercent = 0;
+    }
+
+    const chartDiv = document.getElementById('chart-div');
+    chartDiv.setAttribute('class', 'hidden');   
+
+    renderTable();
+    renderImages();
+    activateListener();
+});
+
+createProducts();
+renderTable();
+renderImages();
+activateListener();
