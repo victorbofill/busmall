@@ -1,7 +1,7 @@
 # BusMall Market Research
 ## Research into product demand
 ### To-do User Stories for research app
-As a market researcher, I want all voting data to persist through surveys, reloads, and browser resets.
+As a market researcher, I want all voting data to persist through surveys, reloads, and browser resets.<br/>
 
 ### Stretch Goals
 As a developer, I want to move my code into an object.<br/>

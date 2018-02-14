@@ -4,6 +4,7 @@ const products = [];
 let activeObjects = [];
 let activeImage = [];
 let clickCounter = 0;
+const button = document.getElementById('button');
 
 function Product (prodName, prodImage) {
     this.prodName = prodName,
@@ -13,7 +14,7 @@ function Product (prodName, prodImage) {
     this.prodPercent = 0;
 };
 
-function createProducts () {
+const createProducts = function() {
     const prodR2Bag = new Product('R2-D2 Bag', 'bag.jpg');
     products.push(prodR2Bag);
 
@@ -74,11 +75,11 @@ function createProducts () {
 
     const prodWineGlass = new Product('Drunk Proof Wineglass', 'wine-glass.jpg');
     products.push(prodWineGlass);
-}
+};
 
-const renderTable = function () {
+const renderTable = function() {
     const header = document.getElementById('header');
-    const h3 = document.createElement('h3');
+    let h3 = document.createElement('h3');
     header.appendChild(h3);
     h3.textContent = 'Click on the image of the product you would most likely purchase';
     h3.setAttribute('id', 'header-message');
@@ -101,9 +102,9 @@ const renderTable = function () {
     };
 
     const footer = document.getElementById('footer');
-    const h3Two = document.createElement('h3');
-    footer.appendChild(h3Two);
-    h3Two.setAttribute('id', 'footer-counter');
+    h3 = document.createElement('h3');
+    footer.appendChild(h3);
+    h3.setAttribute('id', 'footer-counter');
 };
 
 const renderImages = function() {
@@ -140,8 +141,8 @@ const activateListener = function() {
             activeImage = [];
             clickCounter++;
             footerCounter.textContent = 'Choices: ' + clickCounter + ' out of 25';
+
             renderImages();
-            console.log(clickCounter);
         };
 
         if (clickedImage === activeImage[0]) {
@@ -157,17 +158,16 @@ const activateListener = function() {
         };
 
         if (clickCounter === 3) {
+            
+            for (let i = 0; i < products.length; i++) {
+                const object = products[i];
 
-            const calcVotePercentage = function(object) {
                 if (object.prodVotes > 0) {
                     object.prodPercent = (((object.prodVotes) / (object.prodRendered)) * 100);
                 }
-            };
-
-            for (let i = 0; i < products.length; i++) {
-                const object = products[i];
-                calcVotePercentage(object);
             }
+
+            localStorage.setItem('products', JSON.stringify(products));
 
             renderGraphs();
         }
@@ -189,21 +189,17 @@ const renderGraphs = function() {
     chartDiv.removeAttribute('class', 'hidden');
 
     const votesCanvas = document.createElement('canvas');
-    const percentCanvas = document.createElement('canvas');
-
     chartDiv.appendChild(votesCanvas);
-    chartDiv.appendChild(percentCanvas);
-
     votesCanvas.setAttribute('height', '100px');
-    percentCanvas.setAttribute('height', '100px');
-
     votesCanvas.setAttribute('width', '200px');
-    percentCanvas.setAttribute('width', '200px');
-
     votesCanvas.setAttribute('id', 'votes-canvas');
-    percentCanvas.setAttribute('id', 'percent-canvas');
-
     const ctx = votesCanvas.getContext('2d');
+    
+    const percentCanvas = document.createElement('canvas');
+    chartDiv.appendChild(percentCanvas);
+    percentCanvas.setAttribute('height', '100px');
+    percentCanvas.setAttribute('width', '200px');
+    percentCanvas.setAttribute('id', 'percent-canvas');
     const ctxPerc = percentCanvas.getContext('2d');
 
     const voteData = {
@@ -365,7 +361,6 @@ const renderGraphs = function() {
     percentChart.update();
 };
 
-const button = document.getElementById('button');
 button.addEventListener('click', function () {
     activeObjects = [];
     activeImage = [];
@@ -373,8 +368,6 @@ button.addEventListener('click', function () {
 
     for (let i = 0; i < products.length; i++) {
         products[i].prodPercent = 0;
-        products[i].prodVotes = 0;
-        products[i].prodRendered = 0;
     }
 
     const votesCanvas = document.getElementById('votes-canvas');
@@ -391,7 +384,12 @@ button.addEventListener('click', function () {
     activateListener();
 });
 
-createProducts();
+if (localStorage.getItem('donations')) {
+    products = JSON.parse(localStorage.getItem('products'));
+} else {
+    createProducts();
+}
+
 renderTable();
 renderImages();
 activateListener();
