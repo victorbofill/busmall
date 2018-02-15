@@ -1,7 +1,6 @@
 # BusMall Market Research
 ## Research into product demand
 ### To-do User Stories for research app
-As a market researcher, I want a settings page to adjust the number of images shown (2-5) and the number of rounds (5-20).
 
 ### Stretch Goals
 As a developer, I want to refactor my code.<br/>
@@ -27,6 +26,7 @@ As a developer, I want to use Chart.js to construct the bar chart.<br/>
 As a market researcher, I want to see the percentages of times a product was selected out of how many times it was displayed.<br/>
 As a developer, I want to include a button that will restart the survey for the next customer.<br/>
 As a market researcher, I want all voting data to persist through surveys, reloads, and browser resets.<br/>
+As a market researcher, I want a settings page to adjust the number of images shown (2-5) and the number of rounds (5-20).
 
 ### Goals to be written as user stories
 
