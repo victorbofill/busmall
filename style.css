@@ -31,6 +31,18 @@ td {
     width: 20em;
 }
 
+#settings-form {
+    width: fit-content;
+}
+
+#settings-list {
+    list-style: none;
+}
+
+#settings-list li {
+    margin: 0 1em 1em -2em;
+}
+
 img {
     height: inherit;
     width: inherit;
