@@ -3,7 +3,7 @@
 ### To-do User Stories for research app
 
 ### Stretch Goals
-As a developer, I want to move my code into an object.<br/>
+As a developer, I want to refactor my code.<br/>
 As a market researcher, I want to control the experiment by disallowing an image to show twice in a row.<br/>
 As a customer, I want some background music to enjoy while I am taking the survey.<br/>
 As a customer, I want to be able to pause the music.<br/>
@@ -12,7 +12,7 @@ As a market researcher, I want to see the most recent survey results as well as 
 As a market researcher, I want to be able to manually reset all data.<br/>
 As a developer, I want to improve the UX for both market researchers and customers.<br/>
 
-### Complete User Stories for research app
+### Completed User Stories for research app
 As a market researcher, I want customers to make one choice of three options, depicted as pictures.<br/>
 As a market researcher, I want customers to make a choice twenty-five times.<br/>
 As a market researcher, I want to know the total number of times a product is selected.<br/>
