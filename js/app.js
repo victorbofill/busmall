@@ -3,8 +3,16 @@
 let products = [];
 let activeObjects = [];
 let activeImage = [];
+let Settings = {prodShown: 3, rounds: 25};
 let clickCounter = 0;
+
+
 const button = document.getElementById('button');
+
+if (localStorage.getItem('Settings')) {
+    Settings = JSON.parse(localStorage.getItem('Settings'));
+};
+
 
 function Product (prodName, prodImage) {
     this.prodName = prodName,
@@ -92,7 +100,7 @@ const renderTable = function() {
     const tr = document.createElement('tr');
     table.appendChild(tr);
 
-    for (let i = 0; i < 3; i++) {
+    for (let i = 0; i < JSON.parse(Settings.prodShown); i++) {
         const td = document.createElement('td');
         tr.appendChild(td);
 
@@ -109,7 +117,7 @@ const renderTable = function() {
 
 const renderImages = function() {
     let i = 0;
-    while (activeObjects.length < 3) {
+    while (activeObjects.length < (Settings.prodShown)) {
         const randomNumber = Math.floor(Math.random() * (products.length));
         const randomProduct = (products[randomNumber]);
 
@@ -140,7 +148,7 @@ const activateListener = function() {
             activeObjects = [];
             activeImage = [];
             clickCounter++;
-            footerCounter.textContent = 'Choices: ' + clickCounter + ' out of 25';
+            footerCounter.textContent = 'Choices: ' + clickCounter + ' out of ' + Settings.rounds;
 
             renderImages();
         };
@@ -157,7 +165,7 @@ const activateListener = function() {
             clickProcess(2);
         };
 
-        if (clickCounter === 25) {
+        if (clickCounter === JSON.parse(Settings.rounds)) {
 
             for (let i = 0; i < products.length; i++) {
                 const object = products[i];
