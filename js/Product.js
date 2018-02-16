@@ -1,6 +1,6 @@
 'use strict';
 
-function Product (prodName, prodImage) {
+function Product (prodName, prodImage) { // eslint-disable-line
     this.prodName = prodName,
     this.prodImage = prodImage,
     this.prodVotes = 0,

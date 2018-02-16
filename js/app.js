@@ -61,7 +61,7 @@ const game = {
         const tr = document.createElement('tr');
         table.appendChild(tr);
 
-        for (let i = 0; i < JSON.parse(Settings.prodShown); i++) {
+        for (let i = 0; i < JSON.parse(this.Settings.prodShown); i++) {
             const td = document.createElement('td');
             tr.appendChild(td);
 
@@ -77,19 +77,19 @@ const game = {
     },
     renderImages: function() {
         let i = 0;
-        while (activeObjects.length < (Settings.prodShown)) {
-            const randomNumber = Math.floor(Math.random() * (products.length));
-            const randomProduct = (game.products[randomNumber]);
+        while (this.activeObjects.length < (this.Settings.prodShown)) {
+            const randomNumber = Math.floor(Math.random() * (this.products.length));
+            const randomProduct = (this.products[randomNumber]);
 
             randomProduct.prodRendered += 1;
 
-            if (activeObjects.includes(randomProduct)) continue;
+            if (this.activeObjects.includes(randomProduct)) continue;
 
-            activeObjects.push(randomProduct);
+            this.activeObjects.push(randomProduct);
 
             const img = document.getElementById((i));
-            img.setAttribute('src', 'img/' + activeObjects[i].prodImage);
-            activeImage.push(img);
+            img.setAttribute('src', 'img/' + this.activeObjects[i].prodImage);
+            this.activeImage.push(img);
             i++;
         }
     },
@@ -102,38 +102,38 @@ const game = {
             const footerCounter = document.getElementById('footer-counter');
 
             const clickProcess = function(x) {
-                activeObjects[x].prodVotes += 1;
-                activeObjects = [];
-                activeImage = [];
-                clickCounter++;
-                footerCounter.textContent = 'Choices: ' + clickCounter + ' out of ' + Settings.rounds;
+                game.activeObjects[x].prodVotes += 1;
+                game.activeObjects = [];
+                game.activeImage = [];
+                game.clickCounter++;
+                footerCounter.textContent = 'Choices: ' + game.clickCounter + ' out of ' + game.Settings.rounds;
 
                 game.renderImages();
             };
 
-            if (clickedImage === activeImage[0]) {
+            if (clickedImage === game.activeImage[0]) {
                 clickProcess(0);
             };
 
-            if (clickedImage === activeImage[1]) {
+            if (clickedImage === game.activeImage[1]) {
                 clickProcess(1);
             };
 
-            if (clickedImage === activeImage[2]) {
+            if (clickedImage === game.activeImage[2]) {
                 clickProcess(2);
             };
 
-            if (clickCounter === JSON.parse(Settings.rounds)) {
+            if (game.clickCounter === JSON.parse(game.Settings.rounds)) {
 
-                for (let i = 0; i < products.length; i++) {
-                    const object = products[i];
+                for (let i = 0; i < game.products.length; i++) {
+                    const object = game.products[i];
 
                     if (object.prodVotes > 0) {
                         object.prodPercent = (((object.prodVotes) / (object.prodRendered)) * 100);
                     }
                 }
 
-                localStorage.setItem('products', JSON.stringify(products));
+                localStorage.setItem('products', JSON.stringify(game.products));
 
                 game.renderGraphs();
             }
@@ -168,62 +168,62 @@ const game = {
         const ctxPerc = percentCanvas.getContext('2d');
 
         const voteData = {
-            labels: [products[0].prodName, products[1].prodName, products[2].prodName, products[3].prodName,
-                products[4].prodName, products[5].prodName, products[6].prodName, products[7].prodName,
-                products[8].prodName, products[9].prodName, products[10].prodName, products[11].prodName,
-                products[12].prodName, products[13].prodName, products[14].prodName, products[15].prodName,
-                products[16].prodName, products[17].prodName, products[18].prodName, products[19].prodName
+            labels: [game.products[0].prodName, game.products[1].prodName, game.products[2].prodName, game.products[3].prodName,
+                game.products[4].prodName, game.products[5].prodName, game.products[6].prodName, game.products[7].prodName,
+                game.products[8].prodName, game.products[9].prodName, game.products[10].prodName, game.products[11].prodName,
+                game.products[12].prodName, game.products[13].prodName, game.products[14].prodName, game.products[15].prodName,
+                game.products[16].prodName, game.products[17].prodName, game.products[18].prodName, game.products[19].prodName
             ],
             datasets: [{
                 label:'Times Rendered',
                 backgroundColor: 'rgb(225, 0, 0)',
                 stack: 'Stack 0',
                 data: [
-                    products[0].prodRendered,
-                    products[1].prodRendered,
-                    products[2].prodRendered,
-                    products[3].prodRendered,
-                    products[4].prodRendered,
-                    products[5].prodRendered,
-                    products[6].prodRendered,
-                    products[7].prodRendered,
-                    products[8].prodRendered,
-                    products[9].prodRendered,
-                    products[10].prodRendered,
-                    products[11].prodRendered,
-                    products[12].prodRendered,
-                    products[13].prodRendered,
-                    products[14].prodRendered,
-                    products[15].prodRendered,
-                    products[16].prodRendered,
-                    products[17].prodRendered,
-                    products[18].prodRendered,
-                    products[19].prodRendered
+                    game.products[0].prodRendered,
+                    game.products[1].prodRendered,
+                    game.products[2].prodRendered,
+                    game.products[3].prodRendered,
+                    game.products[4].prodRendered,
+                    game.products[5].prodRendered,
+                    game.products[6].prodRendered,
+                    game.products[7].prodRendered,
+                    game.products[8].prodRendered,
+                    game.products[9].prodRendered,
+                    game.products[10].prodRendered,
+                    game.products[11].prodRendered,
+                    game.products[12].prodRendered,
+                    game.products[13].prodRendered,
+                    game.products[14].prodRendered,
+                    game.products[15].prodRendered,
+                    game.products[16].prodRendered,
+                    game.products[17].prodRendered,
+                    game.products[18].prodRendered,
+                    game.products[19].prodRendered
                 ]},
             {label: 'Times Selected',
                 backgroundColor: 'rgb(0, 225, 0)',
                 stack: 'Stack 0',
                 data: [
-                    products[0].prodVotes,
-                    products[1].prodVotes,
-                    products[2].prodVotes,
-                    products[3].prodVotes,
-                    products[4].prodVotes,
-                    products[5].prodVotes,
-                    products[6].prodVotes,
-                    products[7].prodVotes,
-                    products[8].prodVotes,
-                    products[9].prodVotes,
-                    products[10].prodVotes,
-                    products[11].prodVotes,
-                    products[12].prodVotes,
-                    products[13].prodVotes,
-                    products[14].prodVotes,
-                    products[15].prodVotes,
-                    products[16].prodVotes,
-                    products[17].prodVotes,
-                    products[18].prodVotes,
-                    products[19].prodVotes
+                    game.products[0].prodVotes,
+                    game.products[1].prodVotes,
+                    game.products[2].prodVotes,
+                    game.products[3].prodVotes,
+                    game.products[4].prodVotes,
+                    game.products[5].prodVotes,
+                    game.products[6].prodVotes,
+                    game.products[7].prodVotes,
+                    game.products[8].prodVotes,
+                    game.products[9].prodVotes,
+                    game.products[10].prodVotes,
+                    game.products[11].prodVotes,
+                    game.products[12].prodVotes,
+                    game.products[13].prodVotes,
+                    game.products[14].prodVotes,
+                    game.products[15].prodVotes,
+                    game.products[16].prodVotes,
+                    game.products[17].prodVotes,
+                    game.products[18].prodVotes,
+                    game.products[19].prodVotes
                 ]
             }],
         };
@@ -258,37 +258,37 @@ const game = {
         });
 
         const percentData = {
-            labels: [products[0].prodName, products[1].prodName, products[2].prodName, products[3].prodName,
-                products[4].prodName, products[5].prodName, products[6].prodName, products[7].prodName,
-                products[8].prodName, products[9].prodName, products[10].prodName, products[11].prodName,
-                products[12].prodName, products[13].prodName, products[14].prodName, products[15].prodName,
-                products[16].prodName, products[17].prodName, products[18].prodName, products[19].prodName
+            labels: [game.products[0].prodName, game.products[1].prodName, game.products[2].prodName, game.products[3].prodName,
+                game.products[4].prodName, game.products[5].prodName, game.products[6].prodName, game.products[7].prodName,
+                game.products[8].prodName, game.products[9].prodName, game.products[10].prodName, game.products[11].prodName,
+                game.products[12].prodName, game.products[13].prodName, game.products[14].prodName, game.products[15].prodName,
+                game.products[16].prodName, game.products[17].prodName, game.products[18].prodName, game.products[19].prodName
             ],
             datasets: [{
                 label:'Percent Selected',
                 backgroundColor: 'rgb(0, 0, 255)',
                 stack: 'Stack 0',
                 data: [
-                    products[0].prodPercent,
-                    products[1].prodPercent,
-                    products[2].prodPercent,
-                    products[3].prodPercent,
-                    products[4].prodPercent,
-                    products[5].prodPercent,
-                    products[6].prodPercent,
-                    products[7].prodPercent,
-                    products[8].prodPercent,
-                    products[9].prodPercent,
-                    products[10].prodPercent,
-                    products[11].prodPercent,
-                    products[12].prodPercent,
-                    products[13].prodPercent,
-                    products[14].prodPercent,
-                    products[15].prodPercent,
-                    products[16].prodPercent,
-                    products[17].prodPercent,
-                    products[18].prodPercent,
-                    products[19].prodPercent
+                    game.products[0].prodPercent,
+                    game.products[1].prodPercent,
+                    game.products[2].prodPercent,
+                    game.products[3].prodPercent,
+                    game.products[4].prodPercent,
+                    game.products[5].prodPercent,
+                    game.products[6].prodPercent,
+                    game.products[7].prodPercent,
+                    game.products[8].prodPercent,
+                    game.products[9].prodPercent,
+                    game.products[10].prodPercent,
+                    game.products[11].prodPercent,
+                    game.products[12].prodPercent,
+                    game.products[13].prodPercent,
+                    game.products[14].prodPercent,
+                    game.products[15].prodPercent,
+                    game.products[16].prodPercent,
+                    game.products[17].prodPercent,
+                    game.products[18].prodPercent,
+                    game.products[19].prodPercent
                 ]},
             ],
         };
@@ -325,10 +325,10 @@ const game = {
         voteChart.update();
         percentChart.update();
 
-        button.addEventListener('click', function () {
-            activeObjects = [];
-            activeImage = [];
-            clickCounter = 0;
+        game.button.addEventListener('click', function () {
+            game.activeObjects = [];
+            game.activeImage = [];
+            game.clickCounter = 0;
 
             const votesCanvas = document.getElementById('votes-canvas');
             votesCanvas.remove();
