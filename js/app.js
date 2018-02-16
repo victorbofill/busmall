@@ -257,7 +257,7 @@ const game = {
             options: {
                 title: {
                     display: true,
-                    text: 'Results of Your Survey'
+                    text: 'Total Times Appeared and Selected'
                 },
                 tooltips: {
                     mode: 'index',
@@ -322,7 +322,7 @@ const game = {
             options: {
                 title: {
                     display: true,
-                    text: 'Results of Your Survey'
+                    text: 'Percentage of Times Selected'
                 },
                 tooltips: {
                     mode: 'index',
@@ -412,7 +412,7 @@ const game = {
             options: {
                 title: {
                     display: true,
-                    text: 'Results of Your Survey'
+                    text: 'Individual Selections'
                 },
                 tooltips: {
                     mode: 'index',
@@ -442,6 +442,8 @@ const game = {
         game.button.addEventListener('click', function () {
             game.activeObjects = [];
             game.activeImage = [];
+            game.prodIndividVotes = 0;
+            game.prodIndividRendered = 0;
             game.clickCounter = 0;
 
             const votesCanvas = document.getElementById('votes-canvas');
