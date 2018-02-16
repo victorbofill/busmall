@@ -30,13 +30,12 @@ const game = {
     ],
     start: function() {
         if (localStorage.getItem('Settings')) {
-            this.Settings = JSON.parse(localStorage.getItem('Settings'));
-        } else {
-            this.createProducts();
+            game.Settings = JSON.parse(localStorage.getItem('Settings'));
         }
-        this.renderTable();
-        this.renderImages();
-        this.activateListener();
+        game.createProducts();
+        game.renderTable();
+        game.renderImages();
+        game.activateListener();
     },
     createProducts: function() {
         for (let i = 0; i < this.productInfo.length; i = i + 2) {
