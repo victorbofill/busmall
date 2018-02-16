@@ -39,8 +39,8 @@ const game = {
             game.createProducts();
         }
         for (let i = 0; i < game.products.length ; i++) {
-            game.products[i].prodIndividVotes = [];
-            game.products[i].prodIndividRendered = [];
+            game.products[i].prodIndividVotes = 0;
+            game.products[i].prodIndividRendered = 0;
         }
 
         game.renderTable();
@@ -90,7 +90,9 @@ const game = {
             const randomProduct = (this.products[randomNumber]);
 
             randomProduct.prodRendered += 1;
+            console.log('Prod rendered: ' + randomProduct.prodRendered);
             randomProduct.prodIndividRendered += 1;
+            console.log('Individual votes: ' + randomProduct.prodIndividRendered);
 
             if (this.activeObjects.includes(randomProduct)) continue;
             if (this.previousImages.includes(randomProduct)) continue;
@@ -185,7 +187,7 @@ const game = {
         chartDiv.appendChild(individualCanvas);
         individualCanvas.setAttribute('height', '100px');
         individualCanvas.setAttribute('width', '200px');
-        individualCanvas.setAttribute('id', 'votes-canvas');
+        individualCanvas.setAttribute('id', 'individual-canvas');
         const ctxIndivid = individualCanvas.getContext('2d');
 
         const voteData = {
@@ -447,6 +449,9 @@ const game = {
 
             const percentCanvas = document.getElementById('percent-canvas');
             percentCanvas.remove();
+
+            const individualCanvas = document.getElementById('individual-canvas');
+            individualCanvas.remove();
 
             const chartDiv = document.getElementById('chart-div');
             chartDiv.setAttribute('class', 'hidden');
