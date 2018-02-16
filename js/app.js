@@ -1,5 +1,15 @@
 'use strict';
 
+function Product (prodName, prodImage) {
+    this.prodName = prodName,
+    this.prodImage = prodImage,
+    this.prodVotes = 0,
+    this.prodRendered = 0;
+    this.prodPercent = 0;
+    this.prodIndividVotes = 0;
+    this.prodIndividRendered = 0;
+};
+
 const game = {
     products: [],
     activeObjects: [],
@@ -27,26 +37,26 @@ const game = {
         game.activateListener();
     },
     createProducts: function() {
-        products.push(new Product('R2-D2 Bag', 'bag.jpg'));
-        products.push(new Product('Banana Slicer', 'banana.jpg'));
-        products.push(new Product('TP Tablet Stand', 'bathroom.jpg'));
-        products.push(new Product('Boots', 'boots.jpg'));
-        products.push(new Product('Breakfast Machine', 'breakfast.jpg'));
-        products.push(new Product('Meatball Bubblegum', 'bubblegum.jpg'));
-        products.push(new Product('Silly Chair', 'chair.jpg'));
-        products.push(new Product('Cthulhu', 'cthulhu.jpg'));
-        products.push(new Product('Dog Duck Lips', 'dog-duck.jpg'));
-        products.push(new Product('Dragon Meat', 'dragon.jpg'));
-        products.push(new Product('Utensil Pen', 'pen.jpg'));
-        products.push(new Product('Pet Sweeping Shoes', 'pet-sweep.jpg'));
-        products.push(new Product('Pizza Scissors', 'scissors.jpg'));
-        products.push(new Product('Shark Sleeping Bag', 'shark.jpg'));
-        products.push(new Product('Baby Sweeping Suit', 'sweep.png'));
-        products.push(new Product('Tauntuan Sleeping Bag', 'tauntaun.jpg'));
-        products.push(new Product('Unicorn Meat', 'unicorn.jpg'));
-        products.push(new Product('Tentacle USB Stick', 'usb.gif'));
-        products.push(new Product('Silly Wattering Can', 'water-can.jpg'));
-        products.push(new Product('Drunk Proof Wineglass', 'wine-glass.jpg'));
+        this.products.push(new Product('R2-D2 Bag', 'bag.jpg'));
+        this.products.push(new Product('Banana Slicer', 'banana.jpg'));
+        this.products.push(new Product('TP Tablet Stand', 'bathroom.jpg'));
+        this.products.push(new Product('Boots', 'boots.jpg'));
+        this.products.push(new Product('Breakfast Machine', 'breakfast.jpg'));
+        this.products.push(new Product('Meatball Bubblegum', 'bubblegum.jpg'));
+        this.products.push(new Product('Silly Chair', 'chair.jpg'));
+        this.products.push(new Product('Cthulhu', 'cthulhu.jpg'));
+        this.products.push(new Product('Dog Duck Lips', 'dog-duck.jpg'));
+        this.products.push(new Product('Dragon Meat', 'dragon.jpg'));
+        this.products.push(new Product('Utensil Pen', 'pen.jpg'));
+        this.products.push(new Product('Pet Sweeping Shoes', 'pet-sweep.jpg'));
+        this.products.push(new Product('Pizza Scissors', 'scissors.jpg'));
+        this.products.push(new Product('Shark Sleeping Bag', 'shark.jpg'));
+        this.products.push(new Product('Baby Sweeping Suit', 'sweep.png'));
+        this.products.push(new Product('Tauntuan Sleeping Bag', 'tauntaun.jpg'));
+        this.products.push(new Product('Unicorn Meat', 'unicorn.jpg'));
+        this.products.push(new Product('Tentacle USB Stick', 'usb.gif'));
+        this.products.push(new Product('Silly Wattering Can', 'water-can.jpg'));
+        this.products.push(new Product('Drunk Proof Wineglass', 'wine-glass.jpg'));
     },
     renderTable: function() {
         const header = document.getElementById('header');
