@@ -17,7 +17,8 @@ const game = {
     previousImages: [],
     Settings: {prodShown: 3, rounds: 25},
     clickCounter: 0,
-    button: document.getElementById('button'),
+    restartButton: document.getElementById('restart-button'),
+    clearButton: document.getElementById('clear-button'),
     start: function() {
         if (localStorage.getItem('Settings')) {
             game.Settings = JSON.parse(localStorage.getItem('Settings'));
@@ -450,7 +451,8 @@ const game = {
         percentChart.update();
         individVote.update();
 
-        game.button.addEventListener('click', game.resetGame);
+        game.restartButton.addEventListener('click', game.resetGame);
+        game.clearButton.addEventListener('click', game.clearData);
     },
     resetGame: function () {
         game.activeObjects = [];
@@ -474,8 +476,14 @@ const game = {
         game.renderTable();
         game.renderImages();
         game.activateListener();
-
-        game.button.removeEventListener('click', game.resetGame);
+    },
+    clearData: function () {
+        const clear = confirm('This will PERMANENTLY delete all data! Are you sure that you want to do this?');
+        if (clear === true) {
+            localStorage.clear();
+            alert('All local data has been cleared.');
+            game.resetGame();
+        }
     }
 };
 
