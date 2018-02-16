@@ -3,16 +3,15 @@
 ### To-do User Stories for research app
 
 ### Stretch Goals
-As a developer, I want to refactor my code.<br/>
-As a market researcher, I want to control the experiment by disallowing an image to show twice in a row.<br/>
+As a market researcher, I want to see the most recent survey results as well as the total.<br/>
+As a market researcher, I want to be able to manually reset all data.<br/>
+As a market researcher, I want a setting that can hide/show the charts.
 As a customer, I want some background music to enjoy while I am taking the survey.<br/>
 As a customer, I want to be able to pause the music.<br/>
 As a customer, I want to be rewarded for my completion of the survey with a fun graphic or animation.<br/>
-As a market researcher, I want to see the most recent survey results as well as the total.<br/>
-As a market researcher, I want to be able to manually reset all data.<br/>
 As a developer, I want to improve the UX for both market researchers and customers.<br/>
 As a customer, I want some animations during the survey to have a more enjoyable experience.<br/>
-As a market researcher, I want a setting that can hide/show the charts.
+As a developer, I want to refactor my code.<br/>
 
 ### Completed User Stories for research app
 As a market researcher, I want customers to make one choice of three options, depicted as pictures.<br/>
@@ -27,6 +26,7 @@ As a market researcher, I want to see the percentages of times a product was sel
 As a developer, I want to include a button that will restart the survey for the next customer.<br/>
 As a market researcher, I want all voting data to persist through surveys, reloads, and browser resets.<br/>
 As a market researcher, I want a settings page to adjust the number of images shown (2-5) and the number of rounds (5-20).
+As a market researcher, I want to control the experiment by disallowing an image to show twice in a row.<br/>
 
 ### Goals to be written as user stories
 

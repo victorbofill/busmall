@@ -4,6 +4,7 @@ const game = {
     products: [],
     activeObjects: [],
     activeImage: [],
+    previousImages: [],
     Settings: {prodShown: 3, rounds: 25},
     clickCounter: 0,
     button: document.getElementById('button'),
@@ -32,7 +33,16 @@ const game = {
         if (localStorage.getItem('Settings')) {
             game.Settings = JSON.parse(localStorage.getItem('Settings'));
         }
-        game.createProducts();
+        if (localStorage.getItem('products')) {
+            game.products = JSON.parse(localStorage.getItem('products'));
+        } else {
+            game.createProducts();
+        }
+        for (let i = 0; i < game.products.length ; i++) {
+            game.products[i].prodIndividVotes = [];
+            game.products[i].prodIndividRendered = [];
+        }
+
         game.renderTable();
         game.renderImages();
         game.activateListener();
@@ -80,8 +90,10 @@ const game = {
             const randomProduct = (this.products[randomNumber]);
 
             randomProduct.prodRendered += 1;
+            randomProduct.prodIndividRendered += 1;
 
             if (this.activeObjects.includes(randomProduct)) continue;
+            if (this.previousImages.includes(randomProduct)) continue;
 
             this.activeObjects.push(randomProduct);
 
@@ -101,8 +113,12 @@ const game = {
 
             const clickProcess = function(x) {
                 game.activeObjects[x].prodVotes += 1;
+                game.activeObjects[x].prodIndividVotes += 1;
+                game.previousImages = game.activeObjects;
                 game.activeObjects = [];
+
                 game.activeImage = [];
+
                 game.clickCounter++;
                 footerCounter.textContent = 'Choices: ' + game.clickCounter + ' out of ' + game.Settings.rounds;
 
@@ -164,6 +180,13 @@ const game = {
         percentCanvas.setAttribute('width', '200px');
         percentCanvas.setAttribute('id', 'percent-canvas');
         const ctxPerc = percentCanvas.getContext('2d');
+
+        const individualCanvas = document.createElement('canvas');
+        chartDiv.appendChild(individualCanvas);
+        individualCanvas.setAttribute('height', '100px');
+        individualCanvas.setAttribute('width', '200px');
+        individualCanvas.setAttribute('id', 'votes-canvas');
+        const ctxIndivid = individualCanvas.getContext('2d');
 
         const voteData = {
             labels: [game.products[0].prodName, game.products[1].prodName, game.products[2].prodName, game.products[3].prodName,
@@ -320,8 +343,99 @@ const game = {
             }
         });
 
+        const individVoteData = {
+            labels: [game.products[0].prodName, game.products[1].prodName, game.products[2].prodName, game.products[3].prodName,
+                game.products[4].prodName, game.products[5].prodName, game.products[6].prodName, game.products[7].prodName,
+                game.products[8].prodName, game.products[9].prodName, game.products[10].prodName, game.products[11].prodName,
+                game.products[12].prodName, game.products[13].prodName, game.products[14].prodName, game.products[15].prodName,
+                game.products[16].prodName, game.products[17].prodName, game.products[18].prodName, game.products[19].prodName
+            ],
+            datasets: [{
+                label:'Individual Times Rendered',
+                backgroundColor: 'rgb(225, 0, 0)',
+                stack: 'Stack 0',
+                data: [
+                    game.products[0].prodIndividRendered,
+                    game.products[1].prodIndividRendered,
+                    game.products[2].prodIndividRendered,
+                    game.products[3].prodIndividRendered,
+                    game.products[4].prodIndividRendered,
+                    game.products[5].prodIndividRendered,
+                    game.products[6].prodIndividRendered,
+                    game.products[7].prodIndividRendered,
+                    game.products[8].prodIndividRendered,
+                    game.products[9].prodIndividRendered,
+                    game.products[10].prodIndividRendered,
+                    game.products[11].prodIndividRendered,
+                    game.products[12].prodIndividRendered,
+                    game.products[13].prodIndividRendered,
+                    game.products[14].prodIndividRendered,
+                    game.products[15].prodIndividRendered,
+                    game.products[16].prodIndividRendered,
+                    game.products[17].prodIndividRendered,
+                    game.products[18].prodIndividRendered,
+                    game.products[19].prodIndividRendered
+                ]},
+            {label: 'Individual Times Selected',
+                backgroundColor: 'rgb(0, 225, 0)',
+                stack: 'Stack 0',
+                data: [
+                    game.products[0].prodIndividVotes,
+                    game.products[1].prodIndividVotes,
+                    game.products[2].prodIndividVotes,
+                    game.products[3].prodIndividVotes,
+                    game.products[4].prodIndividVotes,
+                    game.products[5].prodIndividVotes,
+                    game.products[6].prodIndividVotes,
+                    game.products[7].prodIndividVotes,
+                    game.products[8].prodIndividVotes,
+                    game.products[9].prodIndividVotes,
+                    game.products[10].prodIndividVotes,
+                    game.products[11].prodIndividVotes,
+                    game.products[12].prodIndividVotes,
+                    game.products[13].prodIndividVotes,
+                    game.products[14].prodIndividVotes,
+                    game.products[15].prodIndividVotes,
+                    game.products[16].prodIndividVotes,
+                    game.products[17].prodIndividVotes,
+                    game.products[18].prodIndividVotes,
+                    game.products[19].prodIndividVotes
+                ]
+            }],
+        };
+
+        const individVote = new Chart (ctxIndivid, { // eslint-disable-line
+            type: 'bar',
+            data: individVoteData,
+            options: {
+                title: {
+                    display: true,
+                    text: 'Results of Your Survey'
+                },
+                tooltips: {
+                    mode: 'index',
+                    intersect: false
+                },
+                responsive: true,
+                scales: {
+                    xAxes: [{
+                        stacked: true,
+                        beginAtZero: true,
+                        ticks: {
+                            autoSkip: false
+                        },
+
+                        yAxes: [{
+                            stacked: true
+                        }]
+                    }]
+                }
+            }
+        });
+
         voteChart.update();
         percentChart.update();
+        individVote.update();
 
         game.button.addEventListener('click', function () {
             game.activeObjects = [];
