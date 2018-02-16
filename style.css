@@ -15,25 +15,33 @@ table {
 td {
     background-color: white;
     border: 1px solid black;
-    padding: 5px;
+    padding: 1px;
     text-align: center;
-}
-
-#vote-table {
-    border-spacing: 2em;
 }
 
 #vote-table td {
     background-color: black;
     border: none;
-    height: 20em;
+    height: 12em;
     padding: .5em;
-    width: 20em;
+    width: 12em;
+}
+
+#settings-form {
+    width: fit-content;
+}
+
+#settings-list {
+    list-style: none;
+}
+
+#settings-list li {
+    margin: 0 1em 1em -2em;
 }
 
 img {
-    height: inherit;
-    width: inherit;
+    height: 15em;
+    width: 15em;
 }
 
 footer {

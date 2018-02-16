@@ -1,391 +1,468 @@
 'use strict';
 
-let products = [];
-let activeObjects = [];
-let activeImage = [];
-let clickCounter = 0;
-const button = document.getElementById('button');
+const game = {
+    products: [],
+    activeObjects: [],
+    activeImage: [],
+    previousImages: [],
+    Settings: {prodShown: 3, rounds: 25},
+    clickCounter: 0,
+    button: document.getElementById('button'),
+    productInfo: ['R2-D2 Bag', 'bag.jpg',
+        'Banana Slicer', 'banana.jpg',
+        'TP Tablet Stand', 'bathroom.jpg',
+        'Boots', 'boots.jpg',
+        'Breakfast Machine', 'breakfast.jpg',
+        'Meatball Bubblegum', 'bubblegum.jpg',
+        'Silly Chair', 'chair.jpg',
+        'Cthulhu', 'cthulhu.jpg',
+        'Dog Duck Lips', 'dog-duck.jpg',
+        'Dragon Meat', 'dragon.jpg',
+        'Utensil Pen', 'pen.jpg',
+        'Pet Sweeping Shoes', 'pet-sweep.jpg',
+        'Pizza Scissors', 'scissors.jpg',
+        'Shark Sleeping Bag', 'shark.jpg',
+        'Baby Sweeping Suit', 'sweep.png',
+        'Tauntuan Sleeping Bag', 'tauntaun.jpg',
+        'Unicorn Meat', 'unicorn.jpg',
+        'Tentacle USB Stick', 'usb.gif',
+        'Silly Wattering Can', 'water-can.jpg',
+        'Drunk Proof Wineglass', 'wine-glass.jpg'
+    ],
+    start: function() {
+        if (localStorage.getItem('Settings')) {
+            game.Settings = JSON.parse(localStorage.getItem('Settings'));
+        }
+        if (localStorage.getItem('products')) {
+            game.products = JSON.parse(localStorage.getItem('products'));
+        } else {
+            game.createProducts();
+        }
+        for (let i = 0; i < game.products.length ; i++) {
+            game.products[i].prodIndividVotes = 0;
+            game.products[i].prodIndividRendered = 0;
+        }
 
-function Product (prodName, prodImage) {
-    this.prodName = prodName,
-    this.prodImage = prodImage,
-    this.prodVotes = 0,
-    this.prodRendered = 0;
-    this.prodPercent = 0;
-};
+        game.renderTable();
+        game.renderImages();
+        game.activateListener();
+    },
+    createProducts: function() {
+        for (let i = 0; i < this.productInfo.length; i = i + 2) {
+            const object = new Product(this.productInfo[i], this.productInfo[i + 1]); // eslint-disable-line
+            this.products.push(object);
+        }
+    },
+    renderTable: function() {
+        const header = document.getElementById('header');
 
-const createProducts = function() {
-    const prodR2Bag = new Product('R2-D2 Bag', 'bag.jpg');
-    products.push(prodR2Bag);
+        let h3 = document.createElement('h3');
+        header.appendChild(h3);
+        h3.textContent = 'Click on the image of the product you would most likely purchase';
+        h3.setAttribute('id', 'header-message');
 
-    const prodBanana = new Product('Banana Slicer', 'banana.jpg');
-    products.push(prodBanana);
+        const section = document.getElementById('test-section');
+        const table = document.createElement('table');
+        table.setAttribute('id', 'vote-table');
+        section.appendChild(table);
 
-    const prodTPStand = new Product('TP Tablet Stand', 'bathroom.jpg');
-    products.push(prodTPStand);
+        const tr = document.createElement('tr');
+        table.appendChild(tr);
 
-    const prodBoots = new Product('Boots', 'boots.jpg');
-    products.push(prodBoots);
+        for (let i = 0; i < JSON.parse(this.Settings.prodShown); i++) {
+            const td = document.createElement('td');
+            tr.appendChild(td);
 
-    const prodBFast = new Product('Breakfast Machine', 'breakfast.jpg');
-    products.push(prodBFast);
+            const img = document.createElement('img');
+            td.appendChild(img);
+            img.setAttribute('id', (i));
+        };
 
-    const prodMeatGum = new Product('Meatball Bubblegum', 'bubblegum.jpg');
-    products.push(prodMeatGum);
+        const footer = document.getElementById('footer');
+        h3 = document.createElement('h3');
+        footer.appendChild(h3);
+        h3.setAttribute('id', 'footer-counter');
+    },
+    renderImages: function() {
+        let i = 0;
+        while (this.activeObjects.length < (this.Settings.prodShown)) {
+            const randomNumber = Math.floor(Math.random() * (this.products.length));
+            const randomProduct = (this.products[randomNumber]);
 
-    const prodChair = new Product('Silly Chair', 'chair.jpg');
-    products.push(prodChair);
+            randomProduct.prodRendered += 1;
+            console.log('Prod rendered: ' + randomProduct.prodRendered);
+            randomProduct.prodIndividRendered += 1;
+            console.log('Individual votes: ' + randomProduct.prodIndividRendered);
 
-    const prodCthulu = new Product('Cthulhu', 'cthulhu.jpg');
-    products.push(prodCthulu);
+            if (this.activeObjects.includes(randomProduct)) continue;
+            if (this.previousImages.includes(randomProduct)) continue;
 
-    const prodDuckLips = new Product('Dog Duck Lips', 'dog-duck.jpg');
-    products.push(prodDuckLips);
+            this.activeObjects.push(randomProduct);
 
-    const prodDragon = new Product('Dragon Meat', 'dragon.jpg');
-    products.push(prodDragon);
+            const img = document.getElementById((i));
+            img.setAttribute('src', 'img/' + this.activeObjects[i].prodImage);
+            this.activeImage.push(img);
+            i++;
+        }
+    },
+    activateListener: function () {
+        const table = document.getElementById('vote-table');
 
-    const prodPen = new Product('Utensil Pen', 'pen.jpg');
-    products.push(prodPen);
+        table.addEventListener('click', function () {
+            const clickedImage = event.target;
 
-    const prodPetSweep = new Product('Pet Sweeping Shoes', 'pet-sweep.jpg');
-    products.push(prodPetSweep);
+            const footerCounter = document.getElementById('footer-counter');
 
-    const prodScissors = new Product('Pizza Scissors', 'scissors.jpg');
-    products.push(prodScissors);
-    prodScissors.index = (products.length - 1);
+            const clickProcess = function(x) {
+                game.activeObjects[x].prodVotes += 1;
+                game.activeObjects[x].prodIndividVotes += 1;
+                game.previousImages = game.activeObjects;
+                game.activeObjects = [];
 
-    const prodShark = new Product('Shark Sleeping Bag', 'shark.jpg');
-    products.push(prodShark);
+                game.activeImage = [];
 
-    const prodBabySweep = new Product('Baby Sweeping Suit', 'sweep.png');
-    products.push(prodBabySweep);
+                game.clickCounter++;
+                footerCounter.textContent = 'Choices: ' + game.clickCounter + ' out of ' + game.Settings.rounds;
 
-    const prodTaunTaun = new Product('Tauntuan Sleeping Bag', 'tauntaun.jpg');
-    products.push(prodTaunTaun);
+                game.renderImages();
+            };
 
-    const prodUnicorn = new Product('Unicorn Meat', 'unicorn.jpg');
-    products.push(prodUnicorn);
+            if (clickedImage === game.activeImage[0]) {
+                clickProcess(0);
+            };
 
-    const prodUSB = new Product('Tentacle USB Stick', 'usb.gif');
-    products.push(prodUSB);
+            if (clickedImage === game.activeImage[1]) {
+                clickProcess(1);
+            };
 
-    const prodWaterCan = new Product('Silly Wattering Can', 'water-can.jpg');
-    products.push(prodWaterCan);
+            if (clickedImage === game.activeImage[2]) {
+                clickProcess(2);
+            };
 
-    const prodWineGlass = new Product('Drunk Proof Wineglass', 'wine-glass.jpg');
-    products.push(prodWineGlass);
-};
+            if (game.clickCounter === JSON.parse(game.Settings.rounds)) {
 
-const renderTable = function() {
-    const header = document.getElementById('header');
-    let h3 = document.createElement('h3');
-    header.appendChild(h3);
-    h3.textContent = 'Click on the image of the product you would most likely purchase';
-    h3.setAttribute('id', 'header-message');
+                for (let i = 0; i < game.products.length; i++) {
+                    const object = game.products[i];
 
-    const section = document.getElementById('test-section');
-    const table = document.createElement('table');
-    table.setAttribute('id', 'vote-table');
-    section.appendChild(table);
+                    if (object.prodVotes > 0) {
+                        object.prodPercent = (((object.prodVotes) / (object.prodRendered)) * 100);
+                    }
+                }
 
-    const tr = document.createElement('tr');
-    table.appendChild(tr);
+                localStorage.setItem('products', JSON.stringify(game.products));
 
-    for (let i = 0; i < 3; i++) {
-        const td = document.createElement('td');
-        tr.appendChild(td);
+                game.renderGraphs();
+            }
+        });
+    },
+    renderGraphs: function() {
 
-        const img = document.createElement('img');
-        td.appendChild(img);
-        img.setAttribute('id', (i));
-    };
+        const header = document.getElementById('header-message');
+        header.remove();
 
-    const footer = document.getElementById('footer');
-    h3 = document.createElement('h3');
-    footer.appendChild(h3);
-    h3.setAttribute('id', 'footer-counter');
-};
+        const footerCounter = document.getElementById('footer-counter');
+        footerCounter.remove();
 
-const renderImages = function() {
-    let i = 0;
-    while (activeObjects.length < 3) {
-        const randomNumber = Math.floor(Math.random() * (products.length));
-        const randomProduct = (products[randomNumber]);
+        const table = document.getElementById('vote-table');
+        table.remove();
 
-        randomProduct.prodRendered += 1;
+        const chartDiv = document.getElementById('chart-div');
+        chartDiv.removeAttribute('class', 'hidden');
 
-        if (activeObjects.includes(randomProduct)) continue;
+        const votesCanvas = document.createElement('canvas');
+        chartDiv.appendChild(votesCanvas);
+        votesCanvas.setAttribute('height', '100px');
+        votesCanvas.setAttribute('width', '200px');
+        votesCanvas.setAttribute('id', 'votes-canvas');
+        const ctx = votesCanvas.getContext('2d');
 
-        activeObjects.push(randomProduct);
+        const percentCanvas = document.createElement('canvas');
+        chartDiv.appendChild(percentCanvas);
+        percentCanvas.setAttribute('height', '100px');
+        percentCanvas.setAttribute('width', '200px');
+        percentCanvas.setAttribute('id', 'percent-canvas');
+        const ctxPerc = percentCanvas.getContext('2d');
 
-        const img = document.getElementById((i));
-        img.setAttribute('src', 'img/' + activeObjects[i].prodImage);
-        activeImage.push(img);
-        i++;
+        const individualCanvas = document.createElement('canvas');
+        chartDiv.appendChild(individualCanvas);
+        individualCanvas.setAttribute('height', '100px');
+        individualCanvas.setAttribute('width', '200px');
+        individualCanvas.setAttribute('id', 'individual-canvas');
+        const ctxIndivid = individualCanvas.getContext('2d');
+
+        const voteData = {
+            labels: [game.products[0].prodName, game.products[1].prodName, game.products[2].prodName, game.products[3].prodName,
+                game.products[4].prodName, game.products[5].prodName, game.products[6].prodName, game.products[7].prodName,
+                game.products[8].prodName, game.products[9].prodName, game.products[10].prodName, game.products[11].prodName,
+                game.products[12].prodName, game.products[13].prodName, game.products[14].prodName, game.products[15].prodName,
+                game.products[16].prodName, game.products[17].prodName, game.products[18].prodName, game.products[19].prodName
+            ],
+            datasets: [{
+                label:'Times Rendered',
+                backgroundColor: 'rgb(225, 0, 0)',
+                stack: 'Stack 0',
+                data: [
+                    game.products[0].prodRendered,
+                    game.products[1].prodRendered,
+                    game.products[2].prodRendered,
+                    game.products[3].prodRendered,
+                    game.products[4].prodRendered,
+                    game.products[5].prodRendered,
+                    game.products[6].prodRendered,
+                    game.products[7].prodRendered,
+                    game.products[8].prodRendered,
+                    game.products[9].prodRendered,
+                    game.products[10].prodRendered,
+                    game.products[11].prodRendered,
+                    game.products[12].prodRendered,
+                    game.products[13].prodRendered,
+                    game.products[14].prodRendered,
+                    game.products[15].prodRendered,
+                    game.products[16].prodRendered,
+                    game.products[17].prodRendered,
+                    game.products[18].prodRendered,
+                    game.products[19].prodRendered
+                ]},
+            {label: 'Times Selected',
+                backgroundColor: 'rgb(0, 225, 0)',
+                stack: 'Stack 0',
+                data: [
+                    game.products[0].prodVotes,
+                    game.products[1].prodVotes,
+                    game.products[2].prodVotes,
+                    game.products[3].prodVotes,
+                    game.products[4].prodVotes,
+                    game.products[5].prodVotes,
+                    game.products[6].prodVotes,
+                    game.products[7].prodVotes,
+                    game.products[8].prodVotes,
+                    game.products[9].prodVotes,
+                    game.products[10].prodVotes,
+                    game.products[11].prodVotes,
+                    game.products[12].prodVotes,
+                    game.products[13].prodVotes,
+                    game.products[14].prodVotes,
+                    game.products[15].prodVotes,
+                    game.products[16].prodVotes,
+                    game.products[17].prodVotes,
+                    game.products[18].prodVotes,
+                    game.products[19].prodVotes
+                ]
+            }],
+        };
+
+        const voteChart = new Chart (ctx, { // eslint-disable-line
+            type: 'bar',
+            data: voteData,
+            options: {
+                title: {
+                    display: true,
+                    text: 'Total Times Appeared and Selected'
+                },
+                tooltips: {
+                    mode: 'index',
+                    intersect: false
+                },
+                responsive: true,
+                scales: {
+                    xAxes: [{
+                        stacked: true,
+                        beginAtZero: true,
+                        ticks: {
+                            autoSkip: false
+                        },
+
+                        yAxes: [{
+                            stacked: true
+                        }]
+                    }]
+                }
+            }
+        });
+
+        const percentData = {
+            labels: [game.products[0].prodName, game.products[1].prodName, game.products[2].prodName, game.products[3].prodName,
+                game.products[4].prodName, game.products[5].prodName, game.products[6].prodName, game.products[7].prodName,
+                game.products[8].prodName, game.products[9].prodName, game.products[10].prodName, game.products[11].prodName,
+                game.products[12].prodName, game.products[13].prodName, game.products[14].prodName, game.products[15].prodName,
+                game.products[16].prodName, game.products[17].prodName, game.products[18].prodName, game.products[19].prodName
+            ],
+            datasets: [{
+                label:'Percent Selected',
+                backgroundColor: 'rgb(0, 0, 255)',
+                stack: 'Stack 0',
+                data: [
+                    game.products[0].prodPercent,
+                    game.products[1].prodPercent,
+                    game.products[2].prodPercent,
+                    game.products[3].prodPercent,
+                    game.products[4].prodPercent,
+                    game.products[5].prodPercent,
+                    game.products[6].prodPercent,
+                    game.products[7].prodPercent,
+                    game.products[8].prodPercent,
+                    game.products[9].prodPercent,
+                    game.products[10].prodPercent,
+                    game.products[11].prodPercent,
+                    game.products[12].prodPercent,
+                    game.products[13].prodPercent,
+                    game.products[14].prodPercent,
+                    game.products[15].prodPercent,
+                    game.products[16].prodPercent,
+                    game.products[17].prodPercent,
+                    game.products[18].prodPercent,
+                    game.products[19].prodPercent
+                ]},
+            ],
+        };
+
+        const percentChart = new Chart (ctxPerc, { // eslint-disable-line
+            type: 'bar',
+            data: percentData,
+            options: {
+                title: {
+                    display: true,
+                    text: 'Percentage of Times Selected'
+                },
+                tooltips: {
+                    mode: 'index',
+                    intersect: false
+                },
+                responsive: true,
+                scales: {
+                    xAxes: [{
+                        stacked: true,
+                        beginAtZero: true,
+                        ticks: {
+                            autoSkip: false
+                        },
+
+                        yAxes: [{
+                            stacked: true
+                        }]
+                    }]
+                }
+            }
+        });
+
+        const individVoteData = {
+            labels: [game.products[0].prodName, game.products[1].prodName, game.products[2].prodName, game.products[3].prodName,
+                game.products[4].prodName, game.products[5].prodName, game.products[6].prodName, game.products[7].prodName,
+                game.products[8].prodName, game.products[9].prodName, game.products[10].prodName, game.products[11].prodName,
+                game.products[12].prodName, game.products[13].prodName, game.products[14].prodName, game.products[15].prodName,
+                game.products[16].prodName, game.products[17].prodName, game.products[18].prodName, game.products[19].prodName
+            ],
+            datasets: [{
+                label:'Individual Times Rendered',
+                backgroundColor: 'rgb(225, 0, 0)',
+                stack: 'Stack 0',
+                data: [
+                    game.products[0].prodIndividRendered,
+                    game.products[1].prodIndividRendered,
+                    game.products[2].prodIndividRendered,
+                    game.products[3].prodIndividRendered,
+                    game.products[4].prodIndividRendered,
+                    game.products[5].prodIndividRendered,
+                    game.products[6].prodIndividRendered,
+                    game.products[7].prodIndividRendered,
+                    game.products[8].prodIndividRendered,
+                    game.products[9].prodIndividRendered,
+                    game.products[10].prodIndividRendered,
+                    game.products[11].prodIndividRendered,
+                    game.products[12].prodIndividRendered,
+                    game.products[13].prodIndividRendered,
+                    game.products[14].prodIndividRendered,
+                    game.products[15].prodIndividRendered,
+                    game.products[16].prodIndividRendered,
+                    game.products[17].prodIndividRendered,
+                    game.products[18].prodIndividRendered,
+                    game.products[19].prodIndividRendered
+                ]},
+            {label: 'Individual Times Selected',
+                backgroundColor: 'rgb(0, 225, 0)',
+                stack: 'Stack 0',
+                data: [
+                    game.products[0].prodIndividVotes,
+                    game.products[1].prodIndividVotes,
+                    game.products[2].prodIndividVotes,
+                    game.products[3].prodIndividVotes,
+                    game.products[4].prodIndividVotes,
+                    game.products[5].prodIndividVotes,
+                    game.products[6].prodIndividVotes,
+                    game.products[7].prodIndividVotes,
+                    game.products[8].prodIndividVotes,
+                    game.products[9].prodIndividVotes,
+                    game.products[10].prodIndividVotes,
+                    game.products[11].prodIndividVotes,
+                    game.products[12].prodIndividVotes,
+                    game.products[13].prodIndividVotes,
+                    game.products[14].prodIndividVotes,
+                    game.products[15].prodIndividVotes,
+                    game.products[16].prodIndividVotes,
+                    game.products[17].prodIndividVotes,
+                    game.products[18].prodIndividVotes,
+                    game.products[19].prodIndividVotes
+                ]
+            }],
+        };
+
+        const individVote = new Chart (ctxIndivid, { // eslint-disable-line
+            type: 'bar',
+            data: individVoteData,
+            options: {
+                title: {
+                    display: true,
+                    text: 'Individual Selections'
+                },
+                tooltips: {
+                    mode: 'index',
+                    intersect: false
+                },
+                responsive: true,
+                scales: {
+                    xAxes: [{
+                        stacked: true,
+                        beginAtZero: true,
+                        ticks: {
+                            autoSkip: false
+                        },
+
+                        yAxes: [{
+                            stacked: true
+                        }]
+                    }]
+                }
+            }
+        });
+
+        voteChart.update();
+        percentChart.update();
+        individVote.update();
+
+        game.button.addEventListener('click', function () {
+            game.activeObjects = [];
+            game.activeImage = [];
+            game.prodIndividVotes = 0;
+            game.prodIndividRendered = 0;
+            game.clickCounter = 0;
+
+            const votesCanvas = document.getElementById('votes-canvas');
+            votesCanvas.remove();
+
+            const percentCanvas = document.getElementById('percent-canvas');
+            percentCanvas.remove();
+
+            const individualCanvas = document.getElementById('individual-canvas');
+            individualCanvas.remove();
+
+            const chartDiv = document.getElementById('chart-div');
+            chartDiv.setAttribute('class', 'hidden');
+
+            game.renderTable();
+            game.renderImages();
+            game.activateListener();
+        });
     }
 };
 
-const activateListener = function() {
-
-    const table = document.getElementById('vote-table');
-
-    table.addEventListener('click', function () {
-        const clickedImage = event.target;
-
-        const footerCounter = document.getElementById('footer-counter');
-
-        const clickProcess = function(x) {
-            activeObjects[x].prodVotes += 1;
-            activeObjects = [];
-            activeImage = [];
-            clickCounter++;
-            footerCounter.textContent = 'Choices: ' + clickCounter + ' out of 25';
-
-            renderImages();
-        };
-
-        if (clickedImage === activeImage[0]) {
-            clickProcess(0);
-        };
-
-        if (clickedImage === activeImage[1]) {
-            clickProcess(1);
-        };
-
-        if (clickedImage === activeImage[2]) {
-            clickProcess(2);
-        };
-
-        if (clickCounter === 25) {
-
-            for (let i = 0; i < products.length; i++) {
-                const object = products[i];
-
-                if (object.prodVotes > 0) {
-                    object.prodPercent = (((object.prodVotes) / (object.prodRendered)) * 100);
-                }
-            }
-
-            localStorage.setItem('products', JSON.stringify(products));
-
-            renderGraphs();
-        }
-    });
-};
-
-const renderGraphs = function() {
-
-    const header = document.getElementById('header-message');
-    header.remove();
-
-    const footerCounter = document.getElementById('footer-counter');
-    footerCounter.remove();
-
-    const table = document.getElementById('vote-table');
-    table.remove();
-
-    const chartDiv = document.getElementById('chart-div');
-    chartDiv.removeAttribute('class', 'hidden');
-
-    const votesCanvas = document.createElement('canvas');
-    chartDiv.appendChild(votesCanvas);
-    votesCanvas.setAttribute('height', '100px');
-    votesCanvas.setAttribute('width', '200px');
-    votesCanvas.setAttribute('id', 'votes-canvas');
-    const ctx = votesCanvas.getContext('2d');
-
-    const percentCanvas = document.createElement('canvas');
-    chartDiv.appendChild(percentCanvas);
-    percentCanvas.setAttribute('height', '100px');
-    percentCanvas.setAttribute('width', '200px');
-    percentCanvas.setAttribute('id', 'percent-canvas');
-    const ctxPerc = percentCanvas.getContext('2d');
-
-    const voteData = {
-        labels: [products[0].prodName, products[1].prodName, products[2].prodName, products[3].prodName,
-            products[4].prodName, products[5].prodName, products[6].prodName, products[7].prodName,
-            products[8].prodName, products[9].prodName, products[10].prodName, products[11].prodName,
-            products[12].prodName, products[13].prodName, products[14].prodName, products[15].prodName,
-            products[16].prodName, products[17].prodName, products[18].prodName, products[19].prodName
-        ],
-        datasets: [{
-            label:'Times Rendered',
-            backgroundColor: 'rgb(225, 0, 0)',
-            stack: 'Stack 0',
-            data: [
-                products[0].prodRendered,
-                products[1].prodRendered,
-                products[2].prodRendered,
-                products[3].prodRendered,
-                products[4].prodRendered,
-                products[5].prodRendered,
-                products[6].prodRendered,
-                products[7].prodRendered,
-                products[8].prodRendered,
-                products[9].prodRendered,
-                products[10].prodRendered,
-                products[11].prodRendered,
-                products[12].prodRendered,
-                products[13].prodRendered,
-                products[14].prodRendered,
-                products[15].prodRendered,
-                products[16].prodRendered,
-                products[17].prodRendered,
-                products[18].prodRendered,
-                products[19].prodRendered
-            ]},
-        {label: 'Times Selected',
-            backgroundColor: 'rgb(0, 225, 0)',
-            stack: 'Stack 0',
-            data: [
-                products[0].prodVotes,
-                products[1].prodVotes,
-                products[2].prodVotes,
-                products[3].prodVotes,
-                products[4].prodVotes,
-                products[5].prodVotes,
-                products[6].prodVotes,
-                products[7].prodVotes,
-                products[8].prodVotes,
-                products[9].prodVotes,
-                products[10].prodVotes,
-                products[11].prodVotes,
-                products[12].prodVotes,
-                products[13].prodVotes,
-                products[14].prodVotes,
-                products[15].prodVotes,
-                products[16].prodVotes,
-                products[17].prodVotes,
-                products[18].prodVotes,
-                products[19].prodVotes
-            ]
-        }],
-    };
-
-    const voteChart = new Chart (ctx, { // eslint-disable-line
-        type: 'bar',
-        data: voteData,
-        options: {
-            title: {
-                display: true,
-                text: 'Results of Your Survey'
-            },
-            tooltips: {
-                mode: 'index',
-                intersect: false
-            },
-            responsive: true,
-            scales: {
-                xAxes: [{
-                    stacked: true,
-                    beginAtZero: true,
-                    ticks: {
-                        autoSkip: false
-                    },
-
-                    yAxes: [{
-                        stacked: true
-                    }]
-                }]
-            }
-        }
-    });
-
-    const percentData = {
-        labels: [products[0].prodName, products[1].prodName, products[2].prodName, products[3].prodName,
-            products[4].prodName, products[5].prodName, products[6].prodName, products[7].prodName,
-            products[8].prodName, products[9].prodName, products[10].prodName, products[11].prodName,
-            products[12].prodName, products[13].prodName, products[14].prodName, products[15].prodName,
-            products[16].prodName, products[17].prodName, products[18].prodName, products[19].prodName
-        ],
-        datasets: [{
-            label:'Percent Selected',
-            backgroundColor: 'rgb(0, 0, 255)',
-            stack: 'Stack 0',
-            data: [
-                products[0].prodPercent,
-                products[1].prodPercent,
-                products[2].prodPercent,
-                products[3].prodPercent,
-                products[4].prodPercent,
-                products[5].prodPercent,
-                products[6].prodPercent,
-                products[7].prodPercent,
-                products[8].prodPercent,
-                products[9].prodPercent,
-                products[10].prodPercent,
-                products[11].prodPercent,
-                products[12].prodPercent,
-                products[13].prodPercent,
-                products[14].prodPercent,
-                products[15].prodPercent,
-                products[16].prodPercent,
-                products[17].prodPercent,
-                products[18].prodPercent,
-                products[19].prodPercent
-            ]},
-        ],
-    };
-
-    const percentChart = new Chart (ctxPerc, { // eslint-disable-line
-        type: 'bar',
-        data: percentData,
-        options: {
-            title: {
-                display: true,
-                text: 'Results of Your Survey'
-            },
-            tooltips: {
-                mode: 'index',
-                intersect: false
-            },
-            responsive: true,
-            scales: {
-                xAxes: [{
-                    stacked: true,
-                    beginAtZero: true,
-                    ticks: {
-                        autoSkip: false
-                    },
-
-                    yAxes: [{
-                        stacked: true
-                    }]
-                }]
-            }
-        }
-    });
-
-    voteChart.update();
-    percentChart.update();
-};
-
-button.addEventListener('click', function () {
-    activeObjects = [];
-    activeImage = [];
-    clickCounter = 0;
-
-    const votesCanvas = document.getElementById('votes-canvas');
-    votesCanvas.remove();
-
-    const percentCanvas = document.getElementById('percent-canvas');
-    percentCanvas.remove();
-
-    const chartDiv = document.getElementById('chart-div');
-    chartDiv.setAttribute('class', 'hidden');
-
-    renderTable();
-    renderImages();
-    activateListener();
-});
-
-if (localStorage.getItem('products')) {
-    products = JSON.parse(localStorage.getItem('products'));
-} else {
-    createProducts();
-}
-
-renderTable();
-renderImages();
-activateListener();
+game.start();
