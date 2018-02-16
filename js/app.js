@@ -178,7 +178,7 @@ const game = {
         const table = document.getElementById('vote-table');
         table.remove();
 
-        const chartDiv = document.getElementById('chart-div');
+        const chartDiv = document.getElementById('chart-container');
         chartDiv.removeAttribute('class', 'hidden');
 
         const votesCanvas = document.createElement('canvas');
@@ -470,7 +470,13 @@ const game = {
         const individualCanvas = document.getElementById('individual-canvas');
         individualCanvas.remove();
 
-        const chartDiv = document.getElementById('chart-div');
+        const chartSizeDivs = document.querySelectorAll('[class="chartjs-size-monitor"');
+        console.log(chartSizeDivs);
+        for (let i = chartSizeDivs.length; i > 0; i--) {
+            chartSizeDivs[(i - 1)].remove();
+        }
+
+        const chartDiv = document.getElementById('chart-container');
         chartDiv.setAttribute('class', 'hidden');
 
         game.renderTable();
