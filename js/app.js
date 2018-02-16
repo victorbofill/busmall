@@ -32,16 +32,15 @@ const game = {
         if (localStorage.getItem('Settings')) {
             this.Settings = JSON.parse(localStorage.getItem('Settings'));
         } else {
-            game.createProducts();
+            this.createProducts();
         }
-        this.createProducts();
         this.renderTable();
         this.renderImages();
         this.activateListener();
     },
     createProducts: function() {
         for (let i = 0; i < this.productInfo.length; i = i + 2) {
-            const object = new Product(this.productInfo[i], this.productInfo[i + 1]);
+            const object = new Product(this.productInfo[i], this.productInfo[i + 1]); // eslint-disable-line
             this.products.push(object);
         }
     },
