@@ -90,9 +90,7 @@ const game = {
             const randomProduct = (this.products[randomNumber]);
 
             randomProduct.prodRendered += 1;
-            console.log('Prod rendered: ' + randomProduct.prodRendered);
             randomProduct.prodIndividRendered += 1;
-            console.log('Individual votes: ' + randomProduct.prodIndividRendered);
 
             if (this.activeObjects.includes(randomProduct)) continue;
             if (this.previousImages.includes(randomProduct)) continue;
@@ -439,29 +437,32 @@ const game = {
         percentChart.update();
         individVote.update();
 
-        game.button.addEventListener('click', function () {
-            game.activeObjects = [];
-            game.activeImage = [];
-            game.prodIndividVotes = 0;
-            game.prodIndividRendered = 0;
-            game.clickCounter = 0;
+        game.button.addEventListener('click', game.resetGame);
+    },
+    resetGame: function () {
+        game.activeObjects = [];
+        game.activeImage = [];
+        game.prodIndividVotes = 0;
+        game.prodIndividRendered = 0;
+        game.clickCounter = 0;
 
-            const votesCanvas = document.getElementById('votes-canvas');
-            votesCanvas.remove();
+        const votesCanvas = document.getElementById('votes-canvas');
+        votesCanvas.remove();
 
-            const percentCanvas = document.getElementById('percent-canvas');
-            percentCanvas.remove();
+        const percentCanvas = document.getElementById('percent-canvas');
+        percentCanvas.remove();
 
-            const individualCanvas = document.getElementById('individual-canvas');
-            individualCanvas.remove();
+        const individualCanvas = document.getElementById('individual-canvas');
+        individualCanvas.remove();
 
-            const chartDiv = document.getElementById('chart-div');
-            chartDiv.setAttribute('class', 'hidden');
+        const chartDiv = document.getElementById('chart-div');
+        chartDiv.setAttribute('class', 'hidden');
 
-            game.renderTable();
-            game.renderImages();
-            game.activateListener();
-        });
+        game.renderTable();
+        game.renderImages();
+        game.activateListener();
+
+        game.button.removeEventListener('click', game.resetGame);
     }
 };
 
