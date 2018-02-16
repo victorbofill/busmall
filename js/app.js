@@ -137,6 +137,14 @@ const game = {
                 clickProcess(2);
             };
 
+            if (clickedImage === game.activeImage[3]) {
+                clickProcess(3);
+            };
+
+            if (clickedImage === game.activeImage[4]) {
+                clickProcess(4);
+            };
+
             if (game.clickCounter === JSON.parse(game.Settings.rounds)) {
 
                 for (let i = 0; i < game.products.length; i++) {
