@@ -8,27 +8,6 @@ const game = {
     Settings: {prodShown: 3, rounds: 25},
     clickCounter: 0,
     button: document.getElementById('button'),
-    productInfo: ['R2-D2 Bag', 'bag.jpg',
-        'Banana Slicer', 'banana.jpg',
-        'TP Tablet Stand', 'bathroom.jpg',
-        'Boots', 'boots.jpg',
-        'Breakfast Machine', 'breakfast.jpg',
-        'Meatball Bubblegum', 'bubblegum.jpg',
-        'Silly Chair', 'chair.jpg',
-        'Cthulhu', 'cthulhu.jpg',
-        'Dog Duck Lips', 'dog-duck.jpg',
-        'Dragon Meat', 'dragon.jpg',
-        'Utensil Pen', 'pen.jpg',
-        'Pet Sweeping Shoes', 'pet-sweep.jpg',
-        'Pizza Scissors', 'scissors.jpg',
-        'Shark Sleeping Bag', 'shark.jpg',
-        'Baby Sweeping Suit', 'sweep.png',
-        'Tauntuan Sleeping Bag', 'tauntaun.jpg',
-        'Unicorn Meat', 'unicorn.jpg',
-        'Tentacle USB Stick', 'usb.gif',
-        'Silly Wattering Can', 'water-can.jpg',
-        'Drunk Proof Wineglass', 'wine-glass.jpg'
-    ],
     start: function() {
         if (localStorage.getItem('Settings')) {
             game.Settings = JSON.parse(localStorage.getItem('Settings'));
@@ -48,10 +27,26 @@ const game = {
         game.activateListener();
     },
     createProducts: function() {
-        for (let i = 0; i < this.productInfo.length; i = i + 2) {
-            const object = new Product(this.productInfo[i], this.productInfo[i + 1]); // eslint-disable-line
-            this.products.push(object);
-        }
+        products.push(new Product('R2-D2 Bag', 'bag.jpg'));
+        products.push(new Product('Banana Slicer', 'banana.jpg'));
+        products.push(new Product('TP Tablet Stand', 'bathroom.jpg'));
+        products.push(new Product('Boots', 'boots.jpg'));
+        products.push(new Product('Breakfast Machine', 'breakfast.jpg'));
+        products.push(new Product('Meatball Bubblegum', 'bubblegum.jpg'));
+        products.push(new Product('Silly Chair', 'chair.jpg'));
+        products.push(new Product('Cthulhu', 'cthulhu.jpg'));
+        products.push(new Product('Dog Duck Lips', 'dog-duck.jpg'));
+        products.push(new Product('Dragon Meat', 'dragon.jpg'));
+        products.push(new Product('Utensil Pen', 'pen.jpg'));
+        products.push(new Product('Pet Sweeping Shoes', 'pet-sweep.jpg'));
+        products.push(new Product('Pizza Scissors', 'scissors.jpg'));
+        products.push(new Product('Shark Sleeping Bag', 'shark.jpg'));
+        products.push(new Product('Baby Sweeping Suit', 'sweep.png'));
+        products.push(new Product('Tauntuan Sleeping Bag', 'tauntaun.jpg'));
+        products.push(new Product('Unicorn Meat', 'unicorn.jpg'));
+        products.push(new Product('Tentacle USB Stick', 'usb.gif'));
+        products.push(new Product('Silly Wattering Can', 'water-can.jpg'));
+        products.push(new Product('Drunk Proof Wineglass', 'wine-glass.jpg'));
     },
     renderTable: function() {
         const header = document.getElementById('header');
