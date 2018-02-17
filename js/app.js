@@ -508,6 +508,7 @@ const game = {
         game.prodIndividVotes = 0;
         game.prodIndividRendered = 0;
         game.clickCounter = 0;
+        game.Settings = {prodShown: 3, rounds: 25};
 
         const votesCanvas = document.getElementById('votes-canvas');
         votesCanvas.remove();
