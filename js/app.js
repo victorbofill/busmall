@@ -20,9 +20,9 @@ const game = {
         game.votingElement = document.getElementById('voting');
         game.graphElements = [
             document.getElementById('chart-container'),
-            document.getElementById('individ-canvas'),
-            document.getElementById('votes-canvas'),
-            document.getElementById('percent-canvas')
+            document.getElementById('individ-div'),
+            document.getElementById('votes-div'),
+            document.getElementById('percent-div')
         ];
         game.pElements = [
             document.getElementById('individ-p'),
@@ -85,8 +85,13 @@ const game = {
         game.graphElements[0].classList.toggle('hidden');
         game.votingElement.classList.toggle('hidden');
 
+        document.getElementById('individ-canvas').remove();
+        document.getElementById('votes-canvas').remove();
+        document.getElementById('percent-canvas').remove();
+
         game.renderImages();
     },
+
     createProducts: function() {
         game.products = [];
         game.products.push(new Product('R2-D2 Bag', 'bag.jpg'));
@@ -163,7 +168,6 @@ const game = {
                 game.activeImage = [];
 
                 game.clickCounter++;
-                console.log(game.clickCounter);
                 footer.textContent = 'Choices: ' + game.clickCounter + ' out of ' + game.Settings.rounds;
 
                 game.renderImages();
@@ -211,9 +215,26 @@ const game = {
 
         game.graphElements[0].classList.toggle('hidden');
 
-        const ctxIndivid = game.graphElements[1].getContext('2d');
-        const ctx = game.graphElements[2].getContext('2d');
-        const ctxPerc = game.graphElements[3].getContext('2d');
+        let newCanvas = document.createElement('canvas');
+        newCanvas.setAttribute('id', 'individ-canvas');
+        newCanvas.setAttribute('width', '200px');
+        newCanvas.setAttribute('height', '100px');
+        game.graphElements[1].appendChild(newCanvas);
+        const ctxIndivid = newCanvas.getContext('2d');
+
+        newCanvas = document.createElement('canvas');
+        newCanvas.setAttribute('id', 'votes-canvas');
+        newCanvas.setAttribute('width', '200px');
+        newCanvas.setAttribute('height', '100px');
+        game.graphElements[2].appendChild(newCanvas);
+        const ctxVotes = newCanvas.getContext('2d');
+
+        newCanvas = document.createElement('canvas');
+        newCanvas.setAttribute('id', 'percent-canvas');
+        newCanvas.setAttribute('width', '200px');
+        newCanvas.setAttribute('height', '100px');
+        game.graphElements[3].appendChild(newCanvas);
+        const ctxPerc = newCanvas.getContext('2d');
 
         const voteData = {
             labels: [game.products[0].prodName, game.products[1].prodName, game.products[2].prodName, game.products[3].prodName,
@@ -276,7 +297,7 @@ const game = {
             }],
         };
 
-        const voteChart = new Chart (ctx, { // eslint-disable-line
+        const voteChart = new Chart (ctxVotes, { // eslint-disable-line
             type: 'bar',
             data: voteData,
             options: {
