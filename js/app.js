@@ -182,25 +182,37 @@ const game = {
         chartDiv.removeAttribute('class', 'hidden');
 
         const votesCanvas = document.createElement('canvas');
-        chartDiv.appendChild(votesCanvas);
+        const votesDiv = document.getElementById('votes-div');
+        votesDiv.appendChild(votesCanvas);
         votesCanvas.setAttribute('height', '100px');
         votesCanvas.setAttribute('width', '200px');
         votesCanvas.setAttribute('id', 'votes-canvas');
         const ctx = votesCanvas.getContext('2d');
 
+        let minimizeDiv = document.getElementById('votes-p');
+        minimizeDiv.addEventListener('click', game.minimizeChart);
+
         const percentCanvas = document.createElement('canvas');
-        chartDiv.appendChild(percentCanvas);
+        const percentDiv = document.getElementById('percent-div');
+        percentDiv.appendChild(percentCanvas);
         percentCanvas.setAttribute('height', '100px');
         percentCanvas.setAttribute('width', '200px');
         percentCanvas.setAttribute('id', 'percent-canvas');
         const ctxPerc = percentCanvas.getContext('2d');
 
+        minimizeDiv = document.getElementById('percent-p');
+        minimizeDiv.addEventListener('click', game.minimizeChart);
+
         const individualCanvas = document.createElement('canvas');
-        chartDiv.appendChild(individualCanvas);
+        const individDiv = document.getElementById('individ-div');
+        individDiv.appendChild(individualCanvas);
         individualCanvas.setAttribute('height', '100px');
         individualCanvas.setAttribute('width', '200px');
         individualCanvas.setAttribute('id', 'individual-canvas');
         const ctxIndivid = individualCanvas.getContext('2d');
+
+        minimizeDiv = document.getElementById('individ-p');
+        minimizeDiv.addEventListener('click', game.minimizeChart);
 
         const voteData = {
             labels: [game.products[0].prodName, game.products[1].prodName, game.products[2].prodName, game.products[3].prodName,
@@ -453,6 +465,31 @@ const game = {
 
         game.restartButton.addEventListener('click', game.resetGame);
         game.clearButton.addEventListener('click', game.clearData);
+    },
+    minimizeChart: function () {
+        const minimizer = event.target;
+
+        const individP = document.getElementById('individ-p');
+        const individCanvas = document.getElementById('individual-canvas');
+        
+        const votesP = document.getElementById('votes-p');
+        const votesCanvas = document.getElementById('votes-canvas');
+
+        const percentP = document.getElementById('percent-p');
+        const percentCanvas = document.getElementById('percent-canvas');
+
+        if (minimizer === individP) {
+            individCanvas.setAttribute('class', 'hidden');
+            console.log('test');
+        };
+
+        if (minimizer === votesP) {
+            votesCanvas.setAttribute('class', 'hidden');
+        };
+
+        if (minimizer === percentP) {
+            percentCanvas.setAttribute('class', 'hidden');
+        };
     },
     resetGame: function () {
         game.activeObjects = [];
