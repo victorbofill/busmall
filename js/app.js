@@ -1,9 +1,9 @@
 'use strict';
 
 function Product (prodName, prodImage) {
-    this.prodName = prodName,
-    this.prodImage = prodImage,
-    this.prodVotes = 0,
+    this.prodName = prodName;
+    this.prodImage = prodImage;
+    this.prodVotes = 0;
     this.prodRendered = 0;
     this.prodPercent = 0;
     this.prodIndividVotes = 0;
@@ -11,71 +11,110 @@ function Product (prodName, prodImage) {
 };
 
 const game = {
-    products: [],
-    activeObjects: [],
-    activeImage: [],
-    previousImages: [],
-    Settings: {prodShown: 3, rounds: 25},
-    clickCounter: 0,
-    restartButton: document.getElementById('restart-button'),
-    clearButton: document.getElementById('clear-button'),
     start: function() {
+        game.products;
+        game.activeObjects = [];
+        game.activeImage = [];
+        game.clickCounter = 0;
+        game.previousImages = [];
+        game.votingElement = document.getElementById('voting');
+        game.graphElements = [
+            document.getElementById('chart-container'),
+            document.getElementById('individ-canvas'),
+            document.getElementById('votes-canvas'),
+            document.getElementById('percent-canvas')
+        ];
+        game.pElements = [
+            document.getElementById('individ-p'),
+            document.getElementById('votes-p'),
+            document.getElementById('percent-p'),
+        ];
+        game.minimizeDivs = [];
+        game.buttonElements = [
+            document.getElementById('restart-button'),
+            document.getElementById('clear-button')
+        ];
+
         if (localStorage.getItem('Settings')) {
             game.Settings = JSON.parse(localStorage.getItem('Settings'));
+        } else {
+            game.Settings = {prodShown: 3, rounds: 25};
         }
+
         if (localStorage.getItem('products')) {
             game.products = JSON.parse(localStorage.getItem('products'));
         } else {
             game.createProducts();
         }
+
         for (let i = 0; i < game.products.length ; i++) {
             game.products[i].prodIndividVotes = 0;
             game.products[i].prodIndividRendered = 0;
+        };
+
+        for (let i = 0; i < game.pElements.length; i++ ) {
+            game.pElements[i].addEventListener('click', game.minimizeChart);
         }
 
-        game.renderTable();
+        if (game.votingElement.classList.contains('hidden')) {
+            console.log(game.graphElements[0]);
+            game.graphElements[0].classList.toggle('hidden');
+            for (let i = 0; i < game.votingElement.length; i++ ) {
+                game.votingElement[i].classList.toggle('hidden');
+            }
+        };
+
+        game.createTable();
         game.renderImages();
-        game.activateListener();
+        game.activateImageListeners();
+    },
+
+    reset: function () {
+        game.activeObjects = [];
+        game.activeImage = [];
+        game.clickCounter = 0;
+        game.previousImages = [];
+
+        for (let i = 0; i < game.products.length ; i++) {
+            game.products[i].prodIndividVotes = 0;
+            game.products[i].prodIndividRendered = 0;
+        };
+
+        document.getElementById('footer').textContent = '';
+
+        game.graphElements[0].classList.toggle('hidden');
+        game.votingElement.classList.toggle('hidden');
+
+        game.renderImages();
     },
     createProducts: function() {
-        this.products.push(new Product('R2-D2 Bag', 'bag.jpg'));
-        this.products.push(new Product('Banana Slicer', 'banana.jpg'));
-        this.products.push(new Product('TP Tablet Stand', 'bathroom.jpg'));
-        this.products.push(new Product('Boots', 'boots.jpg'));
-        this.products.push(new Product('Breakfast Machine', 'breakfast.jpg'));
-        this.products.push(new Product('Meatball Bubblegum', 'bubblegum.jpg'));
-        this.products.push(new Product('Silly Chair', 'chair.jpg'));
-        this.products.push(new Product('Cthulhu', 'cthulhu.jpg'));
-        this.products.push(new Product('Dog Duck Lips', 'dog-duck.jpg'));
-        this.products.push(new Product('Dragon Meat', 'dragon.jpg'));
-        this.products.push(new Product('Utensil Pen', 'pen.jpg'));
-        this.products.push(new Product('Pet Sweeping Shoes', 'pet-sweep.jpg'));
-        this.products.push(new Product('Pizza Scissors', 'scissors.jpg'));
-        this.products.push(new Product('Shark Sleeping Bag', 'shark.jpg'));
-        this.products.push(new Product('Baby Sweeping Suit', 'sweep.png'));
-        this.products.push(new Product('Tauntuan Sleeping Bag', 'tauntaun.jpg'));
-        this.products.push(new Product('Unicorn Meat', 'unicorn.jpg'));
-        this.products.push(new Product('Tentacle USB Stick', 'usb.gif'));
-        this.products.push(new Product('Silly Wattering Can', 'water-can.jpg'));
-        this.products.push(new Product('Drunk Proof Wineglass', 'wine-glass.jpg'));
+        game.products = [];
+        game.products.push(new Product('R2-D2 Bag', 'bag.jpg'));
+        game.products.push(new Product('Banana Slicer', 'banana.jpg'));
+        game.products.push(new Product('TP Tablet Stand', 'bathroom.jpg'));
+        game.products.push(new Product('Boots', 'boots.jpg'));
+        game.products.push(new Product('Breakfast Machine', 'breakfast.jpg'));
+        game.products.push(new Product('Meatball Bubblegum', 'bubblegum.jpg'));
+        game.products.push(new Product('Silly Chair', 'chair.jpg'));
+        game.products.push(new Product('Cthulhu', 'cthulhu.jpg'));
+        game.products.push(new Product('Dog Duck Lips', 'dog-duck.jpg'));
+        game.products.push(new Product('Dragon Meat', 'dragon.jpg'));
+        game.products.push(new Product('Utensil Pen', 'pen.jpg'));
+        game.products.push(new Product('Pet Sweeping Shoes', 'pet-sweep.jpg'));
+        game.products.push(new Product('Pizza Scissors', 'scissors.jpg'));
+        game.products.push(new Product('Shark Sleeping Bag', 'shark.jpg'));
+        game.products.push(new Product('Baby Sweeping Suit', 'sweep.png'));
+        game.products.push(new Product('Tauntuan Sleeping Bag', 'tauntaun.jpg'));
+        game.products.push(new Product('Unicorn Meat', 'unicorn.jpg'));
+        game.products.push(new Product('Tentacle USB Stick', 'usb.gif'));
+        game.products.push(new Product('Silly Wattering Can', 'water-can.jpg'));
+        game.products.push(new Product('Drunk Proof Wineglass', 'wine-glass.jpg'));
     },
-    renderTable: function() {
-        const header = document.getElementById('header');
 
-        let h3 = document.createElement('h3');
-        header.appendChild(h3);
-        h3.textContent = 'Click on the image of the product you would most likely purchase';
-        h3.setAttribute('id', 'header-message');
+    createTable: function() {
+        const tr = document.getElementById('vote-table');
 
-        const section = document.getElementById('test-section');
-        const table = document.createElement('table');
-        table.setAttribute('id', 'vote-table');
-        section.appendChild(table);
-
-        const tr = document.createElement('tr');
-        table.appendChild(tr);
-
-        for (let i = 0; i < JSON.parse(this.Settings.prodShown); i++) {
+        for (let i = 0; i < JSON.parse(game.Settings.prodShown); i++) {
             const td = document.createElement('td');
             tr.appendChild(td);
 
@@ -84,49 +123,48 @@ const game = {
             img.setAttribute('id', (i));
         };
 
-        const footer = document.getElementById('footer');
-        h3 = document.createElement('h3');
-        footer.appendChild(h3);
-        h3.setAttribute('id', 'footer-counter');
     },
+
     renderImages: function() {
         let i = 0;
-        while (this.activeObjects.length < (this.Settings.prodShown)) {
-            const randomNumber = Math.floor(Math.random() * (this.products.length));
-            const randomProduct = (this.products[randomNumber]);
+        while (game.activeObjects.length < (game.Settings.prodShown)) {
+            const randomNumber = Math.floor(Math.random() * (game.products.length));
+            const randomProduct = (game.products[randomNumber]);
 
             randomProduct.prodRendered += 1;
             randomProduct.prodIndividRendered += 1;
 
-            if (this.activeObjects.includes(randomProduct)) continue;
-            if (this.previousImages.includes(randomProduct)) continue;
+            if (game.activeObjects.includes(randomProduct)) continue;
+            if (game.previousImages.includes(randomProduct)) continue;
 
-            this.activeObjects.push(randomProduct);
+            game.activeObjects.push(randomProduct);
 
             const img = document.getElementById((i));
-            img.setAttribute('src', 'img/' + this.activeObjects[i].prodImage);
-            this.activeImage.push(img);
+            img.setAttribute('src', 'img/' + game.activeObjects[i].prodImage);
+            game.activeImage.push(img);
             i++;
         }
     },
-    activateListener: function () {
+
+    activateImageListeners: function () {
         const table = document.getElementById('vote-table');
 
         table.addEventListener('click', function () {
             const clickedImage = event.target;
 
-            const footerCounter = document.getElementById('footer-counter');
+            const footer = document.getElementById('footer');
 
-            const clickProcess = function(x) {
-                game.activeObjects[x].prodVotes += 1;
-                game.activeObjects[x].prodIndividVotes += 1;
+            const clickProcess = function(clickedImage) {
+                game.activeObjects[clickedImage].prodVotes += 1;
+                game.activeObjects[clickedImage].prodIndividVotes += 1;
                 game.previousImages = game.activeObjects;
                 game.activeObjects = [];
 
                 game.activeImage = [];
 
                 game.clickCounter++;
-                footerCounter.textContent = 'Choices: ' + game.clickCounter + ' out of ' + game.Settings.rounds;
+                console.log(game.clickCounter);
+                footer.textContent = 'Choices: ' + game.clickCounter + ' out of ' + game.Settings.rounds;
 
                 game.renderImages();
             };
@@ -167,52 +205,15 @@ const game = {
             }
         });
     },
+
     renderGraphs: function() {
+        game.votingElement.classList.toggle('hidden');
 
-        const header = document.getElementById('header-message');
-        header.remove();
+        game.graphElements[0].classList.toggle('hidden');
 
-        const footerCounter = document.getElementById('footer-counter');
-        footerCounter.remove();
-
-        const table = document.getElementById('vote-table');
-        table.remove();
-
-        const chartDiv = document.getElementById('chart-container');
-        chartDiv.removeAttribute('class', 'hidden');
-
-        const votesCanvas = document.createElement('canvas');
-        const votesDiv = document.getElementById('votes-div');
-        votesDiv.appendChild(votesCanvas);
-        votesCanvas.setAttribute('height', '100px');
-        votesCanvas.setAttribute('width', '200px');
-        votesCanvas.setAttribute('id', 'votes-canvas');
-        const ctx = votesCanvas.getContext('2d');
-
-        let minimizeDiv = document.getElementById('votes-p');
-        minimizeDiv.addEventListener('click', game.minimizeChart);
-
-        const percentCanvas = document.createElement('canvas');
-        const percentDiv = document.getElementById('percent-div');
-        percentDiv.appendChild(percentCanvas);
-        percentCanvas.setAttribute('height', '100px');
-        percentCanvas.setAttribute('width', '200px');
-        percentCanvas.setAttribute('id', 'percent-canvas');
-        const ctxPerc = percentCanvas.getContext('2d');
-
-        minimizeDiv = document.getElementById('percent-p');
-        minimizeDiv.addEventListener('click', game.minimizeChart);
-
-        const individualCanvas = document.createElement('canvas');
-        const individDiv = document.getElementById('individ-div');
-        individDiv.appendChild(individualCanvas);
-        individualCanvas.setAttribute('height', '100px');
-        individualCanvas.setAttribute('width', '200px');
-        individualCanvas.setAttribute('id', 'individual-canvas');
-        const ctxIndivid = individualCanvas.getContext('2d');
-
-        minimizeDiv = document.getElementById('individ-p');
-        minimizeDiv.addEventListener('click', game.minimizeChart);
+        const ctxIndivid = game.graphElements[1].getContext('2d');
+        const ctx = game.graphElements[2].getContext('2d');
+        const ctxPerc = game.graphElements[3].getContext('2d');
 
         const voteData = {
             labels: [game.products[0].prodName, game.products[1].prodName, game.products[2].prodName, game.products[3].prodName,
@@ -463,81 +464,32 @@ const game = {
         percentChart.update();
         individVote.update();
 
-        game.restartButton.addEventListener('click', game.resetGame);
-        game.clearButton.addEventListener('click', game.clearData);
+        game.buttonElements[0].addEventListener('click', game.reset);
+        game.buttonElements[1].addEventListener('click', game.clearData);
     },
+
     minimizeChart: function () {
         const minimizer = event.target;
 
-        const individP = document.getElementById('individ-p');
-        const individCanvas = document.getElementById('individual-canvas');
-
-        const votesP = document.getElementById('votes-p');
-        const votesCanvas = document.getElementById('votes-canvas');
-
-        const percentP = document.getElementById('percent-p');
-        const percentCanvas = document.getElementById('percent-canvas');
-
-        if (minimizer === individP) {
-            if (individCanvas.className === 'hidden') {
-                individCanvas.removeAttribute('class');
-            } else {
-                individCanvas.setAttribute('class', 'hidden');
-            }
+        if (minimizer === game.pElements[0]) {
+            game.graphElements[1].classList.toggle('hidden');
         };
 
-        if (minimizer === votesP) {
-            if (votesCanvas.className === 'hidden') {
-                votesCanvas.removeAttribute('class');
-            } else {
-                votesCanvas.setAttribute('class', 'hidden');
-            }
+        if (minimizer === game.pElements[1]) {
+            game.graphElements[2].classList.toggle('hidden');
         };
 
-        if (minimizer === percentP) {
-            if (percentCanvas.className === 'hidden') {
-                percentCanvas.removeAttribute('class');
-            } else {
-                percentCanvas.setAttribute('class', 'hidden');
-            }
+        if (minimizer === game.pElements[2]) {
+            game.graphElements[3].classList.toggle('hidden');
         };
     },
-    resetGame: function () {
-        game.activeObjects = [];
-        game.activeImage = [];
-        game.prodIndividVotes = 0;
-        game.prodIndividRendered = 0;
-        game.clickCounter = 0;
-        game.Settings = {prodShown: 3, rounds: 25};
 
-        const votesCanvas = document.getElementById('votes-canvas');
-        votesCanvas.remove();
-
-        const percentCanvas = document.getElementById('percent-canvas');
-        percentCanvas.remove();
-
-        const individualCanvas = document.getElementById('individual-canvas');
-        individualCanvas.remove();
-
-        const chartSizeDivs = document.querySelectorAll('[class="chartjs-size-monitor"');
-        console.log(chartSizeDivs);
-        for (let i = chartSizeDivs.length; i > 0; i--) {
-            chartSizeDivs[(i - 1)].remove();
-        }
-
-        const chartDiv = document.getElementById('chart-container');
-        chartDiv.setAttribute('class', 'hidden');
-
-        game.renderTable();
-        game.renderImages();
-        game.activateListener();
-    },
     clearData: function () {
         const clear = confirm('This will PERMANENTLY delete all data! Are you sure that you want to do this?');
         if (clear === true) {
             localStorage.clear();
             alert('All local data has been cleared.');
-            game.resetGame();
+            game.reset();
         }
     }
 };
