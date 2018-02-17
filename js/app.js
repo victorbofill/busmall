@@ -24,10 +24,10 @@ const game = {
             document.getElementById('votes-div'),
             document.getElementById('percent-div')
         ];
-        game.pElements = [
-            document.getElementById('individ-p'),
-            document.getElementById('votes-p'),
-            document.getElementById('percent-p'),
+        game.minimizerElements = [
+            document.getElementById('individ-minimizer'),
+            document.getElementById('votes-minimizer'),
+            document.getElementById('percent-minimizer'),
         ];
         game.minimizeDivs = [];
         game.buttonElements = [
@@ -52,8 +52,8 @@ const game = {
             game.products[i].prodIndividRendered = 0;
         };
 
-        for (let i = 0; i < game.pElements.length; i++ ) {
-            game.pElements[i].addEventListener('click', game.minimizeChart);
+        for (let i = 0; i < game.minimizerElements.length; i++ ) {
+            game.minimizerElements[i].addEventListener('click', game.minimizeChart);
         }
 
         if (game.votingElement.classList.contains('hidden')) {
@@ -492,16 +492,16 @@ const game = {
     minimizeChart: function () {
         const minimizer = event.target;
 
-        if (minimizer === game.pElements[0]) {
-            game.graphElements[1].classList.toggle('hidden');
+        if (minimizer === game.minimizerElements[0]) {
+            document.getElementById('individ-canvas').classList.toggle('hidden');
         };
 
-        if (minimizer === game.pElements[1]) {
-            game.graphElements[2].classList.toggle('hidden');
+        if (minimizer === game.minimizerElements[1]) {
+            document.getElementById('votes-canvas').classList.toggle('hidden');
         };
 
-        if (minimizer === game.pElements[2]) {
-            game.graphElements[3].classList.toggle('hidden');
+        if (minimizer === game.minimizerElements[2]) {
+            document.getElementById('percent-canvas').classList.toggle('hidden');
         };
     },
 
