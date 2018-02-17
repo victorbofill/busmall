@@ -471,7 +471,7 @@ const game = {
 
         const individP = document.getElementById('individ-p');
         const individCanvas = document.getElementById('individual-canvas');
-        
+
         const votesP = document.getElementById('votes-p');
         const votesCanvas = document.getElementById('votes-canvas');
 
@@ -479,16 +479,27 @@ const game = {
         const percentCanvas = document.getElementById('percent-canvas');
 
         if (minimizer === individP) {
-            individCanvas.setAttribute('class', 'hidden');
-            console.log('test');
+            if (individCanvas.className === 'hidden') {
+                individCanvas.removeAttribute('class');
+            } else {
+                individCanvas.setAttribute('class', 'hidden');
+            }
         };
 
         if (minimizer === votesP) {
-            votesCanvas.setAttribute('class', 'hidden');
+            if (votesCanvas.className === 'hidden') {
+                votesCanvas.removeAttribute('class');
+            } else {
+                votesCanvas.setAttribute('class', 'hidden');
+            }
         };
 
         if (minimizer === percentP) {
-            percentCanvas.setAttribute('class', 'hidden');
+            if (percentCanvas.className === 'hidden') {
+                percentCanvas.removeAttribute('class');
+            } else {
+                percentCanvas.setAttribute('class', 'hidden');
+            }
         };
     },
     resetGame: function () {
