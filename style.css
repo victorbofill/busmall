@@ -71,12 +71,6 @@ img {
     display: none !important;
 }
 
-.button-container {
-    background-color: white;
-    padding: .5em;
-    width: fit-content;
-}
-
 button {
     background-color: #084c8d;
     color: white;
@@ -89,6 +83,10 @@ button {
 button:active {
     box-shadow: 0 2px 0;
     transform: translateY(3px);
+}
+
+button a {
+    color: white;
 }
 
 #settings-form {
