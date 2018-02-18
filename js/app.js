@@ -154,8 +154,12 @@ const game = {
     activateImageListeners: function () {
         const table = document.getElementById('vote-table');
 
-        table.addEventListener('click', function () {
-            const clickedImage = event.target;
+        table.addEventListener('click', function (e) {
+            if (!e) {
+                e = window.event;
+                console.log(e);
+            }
+            const clickedImage = e.target || e.srcElement;
 
             const footer = document.getElementById('footer');
 
