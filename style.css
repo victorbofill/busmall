@@ -80,6 +80,17 @@ button {
     margin: 0 .5em;
 }
 
+a {
+    background-color: #084c8d;
+    border: 2px solid white;
+    color: white;
+    display: block;
+    font-family: Hind,Helvetica,Arial,sans-serif;
+    font-weight: bold;
+    padding: 1em;
+    margin: .5em;
+    width: fit-content;
+}
 button:active {
     box-shadow: 0 2px 0;
     transform: translateY(3px);
