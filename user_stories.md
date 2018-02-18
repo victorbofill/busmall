@@ -3,8 +3,6 @@
 ### To-do User Stories for research app
 
 ### Stretch Goals
-As a developer, I want to improve the UX for both market researchers and customers.<br/>
-As a developer, I want to refactor my code.<br/>
 As a customer, I want some background music to enjoy while I am taking the survey.<br/>
 As a customer, I want to be able to pause the music.<br/>
 As a customer, I want to be rewarded for my completion of the survey with a fun graphic or animation.<br/>
@@ -27,6 +25,8 @@ As a market researcher, I want to control the experiment by disallowing an image
 As a market researcher, I want to see the most recent survey results as well as the total.<br/>
 As a market researcher, I want to be able to manually reset all data.<br/>
 As a market researcher, I want a setting that can hide/show the charts.
+As a developer, I want to improve the UX for both market researchers and customers.<br/>
+As a developer, I want to refactor my code.<br/>
 
 ### Goals to be written as user stories
 

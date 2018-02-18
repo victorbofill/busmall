@@ -171,6 +171,7 @@ const game = {
                 footer.textContent = 'Choices: ' + game.clickCounter + ' out of ' + game.Settings.rounds;
 
                 game.renderImages();
+
             };
 
             if (clickedImage === game.activeImage[0]) {
@@ -510,7 +511,7 @@ const game = {
         if (clear === true) {
             localStorage.clear();
             alert('All local data has been cleared.');
-            game.reset();
+            location.reload();
         }
     }
 };

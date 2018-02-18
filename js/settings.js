@@ -24,4 +24,6 @@ form.addEventListener('submit', function() {
     Settings.rounds = newRounds;
 
     localStorage.setItem('Settings', (JSON.stringify(Settings)));
+
+    location.reload();
 });

@@ -3,10 +3,11 @@
 }
 
 body {
+    background-attachment: fixed;
     background-image: url("img/bus.jpg");
-    background-size: 100%;
-    background-repeat: no-repeat;
     background-color: black;
+    background-repeat: no-repeat;
+    background-size: 100%;
 }
 
 h3 {
@@ -20,7 +21,7 @@ h3 {
     background-color: #084c8d;
     border: 4px solid #f46542;
     border-radius: 10px;
-    max-width: fit-content;
+    width: fit-content;
     margin: 10em auto;
     padding: 1em 1em .1em 1em;
 }
@@ -42,6 +43,8 @@ td {
 
 img {
     height: 15em;
+    width: 15em;
+    position: relative;
 }
 
 #chart-container {
@@ -68,7 +71,35 @@ img {
     display: none !important;
 }
 
+.button-container {
+    background-color: white;
+    padding: .5em;
+    width: fit-content;
+}
+
+button {
+    background-color: #084c8d;
+    color: white;
+    font-family: Hind,Helvetica,Arial,sans-serif;
+    font-weight: bold;
+    padding: 1em;
+    margin: 0 .5em;
+}
+
+button:active {
+    box-shadow: 0 2px 0;
+    transform: translateY(3px);
+}
+
 #settings-form {
+    background-color: #084c9d;
+    border: 4px solid #f46542;
+    border-radius: 10px;
+    color: white;
+    font-weight: bold;
+    margin-top: 3em;
+    margin-left: 3em;
+    padding: .5em;
     width: fit-content;
 }
 
@@ -78,4 +109,18 @@ img {
 
 #settings-list li {
     margin: 0 1em 1em -2em;
+}
+
+legend {
+    font-size: 1.5em;
+}
+
+input {
+    background-color: white;
+    color: black;
+    font-family: Hind,Helvetica,Arial,sans-serif;
+    font-weight: bold;
+    margin: 0 .5em;
+    padding: 1em;
+    text-align: center;
 }
